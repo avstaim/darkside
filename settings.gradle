@@ -1,0 +1,3 @@
+include ':darkside'
+include ':testapp'
+rootProject.name = "Darkside"
