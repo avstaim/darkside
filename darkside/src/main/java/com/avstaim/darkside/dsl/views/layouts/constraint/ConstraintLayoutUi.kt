@@ -3,7 +3,6 @@
 package com.avstaim.darkside.dsl.views.layouts.constraint
 
 import android.content.Context
-import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.avstaim.darkside.dsl.views.LayoutBuilder
 import com.avstaim.darkside.dsl.views.Ui
@@ -23,7 +22,7 @@ abstract class ConstraintLayoutUi private constructor(
         }
     }
 
-    protected fun generateId() = View.generateViewId()
+    protected fun generateId() = generateViewIdCompat()
 
     abstract fun ConstraintSetBuilder.constraints()
 }

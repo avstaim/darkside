@@ -18,9 +18,9 @@ Artists framework provides an Artist interface - a lightweight alternative to //
 
 Kotlin DSL to describe animations in an easy-to-write and easy-to-read declarative style. Can be used in a combination with //Darkside artists// framework.
 
-### Darkside layouts
+### Darkside dsl
 
-Reworked fork of famous ((https://github.com/Kotlin/anko/wiki/Anko-Layouts Anko Layouts)) DSL, that was unfortunately discontinued and declared as deprecated by Jetbrains. //Darkside layouts// is designed to be more lightweight and specific, than Anko was.
+DSL pack for comforatble Android development.
 
 ![DarthDroid](images/darthdroid.jpg)
 

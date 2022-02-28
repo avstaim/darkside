@@ -2,6 +2,7 @@
 
 package com.avstaim.darkside.dsl.views.layouts
 
+import android.os.Build
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.Px
@@ -67,15 +68,31 @@ var ViewGroup.MarginLayoutParams.verticalMargin: Int
     }
 
 var ViewGroup.MarginLayoutParams.startMargin: Int
-    get() = marginStart
+    get() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+        marginStart
+    } else {
+        leftMargin
+    }
     set(value) {
-        marginStart = value
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            marginStart = value
+        } else {
+            leftMargin = value
+        }
     }
 
 var ViewGroup.MarginLayoutParams.endMargin: Int
-    get() = marginEnd
+    get() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+        marginEnd
+    } else {
+        rightMargin
+    }
     set(value) {
-        marginEnd = value
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            marginEnd = value
+        } else {
+            rightMargin = value
+        }
     }
 
 interface LayoutParamsBuilder<LP : ViewGroup.LayoutParams> {

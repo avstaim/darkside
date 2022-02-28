@@ -21,7 +21,7 @@ import com.avstaim.darkside.dsl.views.wrapContent
 import com.avstaim.darkside.dsl.views.wrapCtxIfNeeded
 
 class FrameLayoutBuilder(context: Context, @AttrRes defStyleAttr: Int, @StyleRes defStyleRes: Int) :
-    FrameLayout(context, null, defStyleAttr, defStyleRes),
+    FrameLayout(context, null, defStyleAttr), //FIXME: defStyleRes (fuck api16)
     LayoutBuilder<FrameLayout.LayoutParams> by context.layoutBuilder(FrameLayout::LayoutParams) {
 
     constructor(context: Context) : this(context, 0, 0)
@@ -33,6 +33,21 @@ class FrameLayoutBuilder(context: Context, @AttrRes defStyleAttr: Int, @StyleRes
     override val ctx: Context
         get() = context
 }
+
+class FrameLayoutBuilder16(context: Context, @AttrRes defStyleAttr: Int) :
+    FrameLayout(context, null, defStyleAttr),
+    LayoutBuilder<FrameLayout.LayoutParams> by context.layoutBuilder(FrameLayout::LayoutParams) {
+
+    constructor(context: Context) : this(context, 0)
+
+    init {
+        attachTo(this)
+    }
+
+    override val ctx: Context
+        get() = context
+}
+
 
 inline fun ViewBuilder.frameLayout(
     @IdRes id: Int = View.NO_ID,

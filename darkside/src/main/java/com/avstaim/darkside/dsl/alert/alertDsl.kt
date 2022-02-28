@@ -1,14 +1,18 @@
 // Copyright (c) 2020 Yandex LLC. All rights reserved.
 // Author: Alex Sher <avstaim@yandex-team.ru>
 
+@file:Suppress("unused")
+
 package com.avstaim.darkside.dsl.alert
 
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.view.KeyEvent
 import android.view.View
+import androidx.annotation.RequiresApi
 import com.avstaim.darkside.cookies.noGetter
 import com.avstaim.darkside.dsl.views.SimplifiedAddingViewBuilder
 import com.avstaim.darkside.dsl.views.ViewBuilder
@@ -97,6 +101,7 @@ class AlertBuilder(val ctx: Context, style: Int) {
         builder.setNeutralButton(buttonTextResource) { dialog, _ -> onClicked(dialog) }
     }
 
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     fun onDismissed(onClicked: (dialog: DialogInterface) -> Unit) {
         builder.setOnDismissListener(onClicked)
     }

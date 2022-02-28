@@ -43,7 +43,7 @@ class ConstraintLayoutBuilder(context: Context, @AttrRes defStyleAttr: Int, @Sty
     private fun ensureChildrenHaveIds() {
         forEach { child ->
             if (child.id == -1) {
-                child.id = generateViewId()
+                child.id = generateViewIdCompat()
             }
         }
     }

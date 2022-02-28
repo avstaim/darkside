@@ -1,6 +1,7 @@
 package com.avstaim.darkside.dsl.views
 
 import android.content.Context
+import android.os.Build
 import android.util.AttributeSet
 import android.view.View
 import android.widget.AutoCompleteTextView
@@ -20,6 +21,7 @@ import android.widget.Space
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.annotation.AttrRes
+import androidx.annotation.RequiresApi
 import androidx.annotation.StyleRes
 import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.appcompat.widget.AppCompatEditText
@@ -157,13 +159,22 @@ inline fun <reified V : View> createView(
     if (styleAttr == NO_STYLE_ATTR && styleRes == NO_STYLE_RES) {
         createUnstyledView(context)
     } else {
-        createStyledView(
-            context = context,
-            styleAttr = styleAttr,
-            styleRes = styleRes,
-        )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            createStyledView(
+                context = context,
+                styleAttr = styleAttr,
+                styleRes = styleRes,
+            )
+        } else {
+            createStyledViewOld(
+                context = context,
+                styleAttr = styleAttr,
+            )
+        }
+
     }
 
+@RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 @InternalApi
 inline fun <reified V : View> createStyledView(
     context: Context,
@@ -199,6 +210,42 @@ inline fun <reified V : View> createStyledView(
     FloatingActionButton::class.java -> FloatingActionButton(context, null, styleAttr)
     SwitchCompat::class.java -> SwitchMaterial(context, null, styleAttr)
     else -> UnsupportedViewCreator.createStyledView(V::class.java, context, styleAttr, styleRes)
+} as V
+
+@InternalApi
+inline fun <reified V : View> createStyledViewOld(
+    context: Context,
+    @AttrRes styleAttr: Int,
+): V = when (V::class.java) {
+    TextView::class.java -> TextView(context, null, styleAttr)
+    AppCompatTextView::class.java -> AppCompatTextView(context, null, styleAttr)
+    Button::class.java -> Button(context, null, styleAttr)
+    ImageView::class.java -> ImageView(context, null, styleAttr)
+    AppCompatImageView::class.java -> AppCompatImageView(context, null, styleAttr)
+    EditText::class.java -> EditText(context, null, styleAttr)
+    AppCompatEditText::class.java -> AppCompatEditText(context, null, styleAttr)
+    Spinner::class.java -> Spinner(context, null, styleAttr)
+    ImageButton::class.java -> ImageButton(context, null, styleAttr)
+    AppCompatImageButton::class.java -> AppCompatImageButton(context, null, styleAttr)
+    CheckBox::class.java -> CheckBox(context, null, styleAttr)
+    AppCompatCheckBox::class.java -> AppCompatCheckBox(context, null, styleAttr)
+    RadioButton::class.java -> RadioButton(context, null, styleAttr)
+    AppCompatRadioButton::class.java -> AppCompatRadioButton(context, null, styleAttr)
+    CheckedTextView::class.java -> CheckedTextView(context, null, styleAttr)
+    AutoCompleteTextView::class.java -> AutoCompleteTextView(context, null, styleAttr)
+    MultiAutoCompleteTextView::class.java -> MultiAutoCompleteTextView(context, null, styleAttr)
+    RatingBar::class.java -> RatingBar(context, null, styleAttr)
+    AppCompatRatingBar::class.java -> AppCompatRatingBar(context, null, styleAttr)
+    SeekBar::class.java -> SeekBar(context, null, styleAttr)
+    AppCompatSeekBar::class.java -> AppCompatSeekBar(context, null, styleAttr)
+    ProgressBar::class.java -> ProgressBar(context, null, styleAttr)
+    Space::class.java -> Space(context, null, styleAttr)
+    RecyclerView::class.java -> RecyclerView(context, null, styleAttr)
+    Toolbar::class.java -> Toolbar(context, null, styleAttr)
+    View::class.java -> View(context, null, styleAttr)
+    FloatingActionButton::class.java -> FloatingActionButton(context, null, styleAttr)
+    SwitchCompat::class.java -> SwitchMaterial(context, null, styleAttr)
+    else -> UnsupportedViewCreator.createStyledView(V::class.java, context, styleAttr, 0)
 } as V
 
 @InternalApi
