@@ -30,6 +30,7 @@ fun Context.artistDrawable(init: ArtistDrawableBuilder.() -> Unit): ArtistDrawab
     return builder.build()
 }
 
+@Suppress("UNCHECKED_CAST")
 fun Context.pathDrawable(init: PathArtistBuilder.() -> Unit): ArtistDrawable<PathArtist> =
     artistDrawable { pathArtist(init) } as ArtistDrawable<PathArtist>
 

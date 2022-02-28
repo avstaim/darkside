@@ -1,6 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 
 apply from: "${project.projectDir}/../publish.gradle"
 
@@ -24,7 +23,7 @@ android {
 
     kotlinOptions {
         jvmTarget = "11"
-        freeCompilerArgs += "-Xopt-in=com.avstaim.darkside.dsl.views.InternalApi"
+        freeCompilerArgs += "-Xopt-in=com.avstaim.darkside.dsl.views.InternalApi,kotlin.RequiresOptIn"
     }
 }
 

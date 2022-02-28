@@ -2,7 +2,7 @@
 buildscript {
     ext {
         kotlin_version = "1.6.10"
-        artifactory_url = "http://artifactory.yandex.net/yandex_mobile_alicekit_snapshots/"
+        artifactory_url = "https://artifactory.yandex.net/artifactory/yandex_mobile_snapshots/"
 
         libVersion = "0.0.1"
     }
