@@ -1,6 +1,11 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
-    ext.kotlin_version = "1.6.10"
+    ext {
+        kotlin_version = "1.6.10"
+        artifactory_url = "http://artifactory.yandex.net/yandex_mobile_alicekit_snapshots/"
+
+        libVersion = "0.0.1"
+    }
     repositories {
         google()
         mavenCentral()
@@ -23,4 +28,23 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+subprojects {
+    afterEvaluate {
+        if (plugins.hasPlugin("maven-publish")) {
+            publishing {
+                repositories {
+                    maven {
+                        name 'artifactory'
+                        credentials {
+                            username 'yandexmobiledeploy'
+                            password 'yandexmobiledeploy'
+                        }
+                        url artifactory_url
+                    }
+                }
+            }
+        }
+    }
 }

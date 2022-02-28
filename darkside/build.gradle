@@ -2,6 +2,8 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
+apply from: "${project.projectDir}/../publish.gradle"
+
 android {
     compileSdkVersion 31
 
@@ -28,6 +30,11 @@ android {
 
 ext {
     splitties_version = "3.0.0"
+}
+
+task sourceJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier "sources"
 }
 
 dependencies {
