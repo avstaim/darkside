@@ -20,7 +20,7 @@ Kotlin DSL to describe animations in an easy-to-write and easy-to-read declarati
 
 ### Darkside dsl
 
-DSL pack for comforatble Android development.
+DSL pack for comfortatble Android development.
 
 ![DarthDroid](images/darthdroid.jpg)
 

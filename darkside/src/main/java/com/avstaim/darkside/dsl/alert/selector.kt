@@ -1,11 +1,10 @@
 // Copyright (c) 2021 Yandex LLC. All rights reserved.
 // Author: Alex Sher <avstaim@yandex-team.ru>
 
-package com.yandex.dsl.alert
+package com.avstaim.darkside.dsl.alert
 
 import android.content.Context
 import android.content.DialogInterface
-import com.avstaim.darkside.dsl.alert.AlertBuilder
 
 fun Context.selector(
     title: CharSequence? = null,
