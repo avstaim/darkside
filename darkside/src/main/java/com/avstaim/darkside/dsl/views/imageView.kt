@@ -2,12 +2,15 @@
 
 package com.avstaim.darkside.dsl.views
 
+import android.content.res.ColorStateList
+import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.ImageView
 import androidx.annotation.AttrRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.IdRes
 import androidx.annotation.StyleRes
+import androidx.core.widget.ImageViewCompat
 import com.avstaim.darkside.cookies.noGetter
 
 inline fun ViewBuilder.imageView(
@@ -18,6 +21,19 @@ inline fun ViewBuilder.imageView(
     init: ImageView.() -> Unit = {}
 ): ImageView = view(id, themeRes, styleAttr, styleRes, init)
 
-var ImageView.drawableResource: Int
+inline var ImageView.drawableResource: Int
     get() = noGetter()
     set(@DrawableRes value) = setImageResource(value)
+
+
+inline var ImageView.imageDrawable: Drawable?
+    get() = drawable
+    set(value) = setImageDrawable(value)
+
+inline var ImageView.imageResource: Int
+    get() = noGetter()
+    set(@DrawableRes value) = setImageResource(value)
+
+inline var ImageView.imageTintListCompat: ColorStateList
+    get() = noGetter()
+    set(value) = ImageViewCompat.setImageTintList(this, value)
