@@ -12,7 +12,7 @@ import androidx.core.view.doOnLayout
 import com.avstaim.darkside.cookies.Size
 import kotlinx.coroutines.Job
 
-internal var View.visible: Boolean
+var View.visible: Boolean
     get() = visibility == View.VISIBLE
     set(value) {
         visibility = if (value) View.VISIBLE else View.GONE
@@ -60,7 +60,7 @@ val View.positionRect: Rect
 /**
  * Sets [ViewTreeObserver.OnPreDrawListener] to given view
  */
-internal fun View.onPreDraw(action: () -> Boolean) {
+fun View.onPreDraw(action: () -> Boolean) {
     viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
         override fun onPreDraw(): Boolean {
             viewTreeObserver.removeOnPreDrawListener(this)

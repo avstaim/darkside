@@ -4,7 +4,7 @@ buildscript {
         kotlin_version = "1.6.10"
         artifactory_url = "https://artifactory.yandex.net/artifactory/yandex_mobile_snapshots/"
 
-        libVersion = "0.0.4"
+        libVersion = "0.0.5"
     }
     repositories {
         google()

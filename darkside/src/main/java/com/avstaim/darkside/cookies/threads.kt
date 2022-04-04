@@ -9,6 +9,6 @@ import androidx.annotation.WorkerThread
 private val uiHandler = Handler(Looper.getMainLooper())
 
 @WorkerThread
-internal fun postOnUiThread(callback: () -> Unit) {
+fun postOnUiThread(callback: () -> Unit) {
     uiHandler.post(callback)
 }
