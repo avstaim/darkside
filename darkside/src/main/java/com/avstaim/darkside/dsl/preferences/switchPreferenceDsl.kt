@@ -1,5 +1,4 @@
-// Copyright (c) 2020 Yandex LLC. All rights reserved.
-// Author: Alex Sher <avstaim@yandex-team.ru>
+@file:Suppress("unused")
 
 package com.avstaim.darkside.dsl.preferences
 

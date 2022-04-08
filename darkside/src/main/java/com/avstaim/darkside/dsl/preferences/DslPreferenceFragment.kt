@@ -1,5 +1,4 @@
-// Copyright (c) 2020 Yandex LLC. All rights reserved.
-// Author: Alex Sher <avstaim@yandex-team.ru>
+@file:Suppress("unused")
 
 package com.avstaim.darkside.dsl.preferences
 
@@ -14,15 +13,11 @@ import com.avstaim.darkside.flags.EnumFlag
 import com.avstaim.darkside.flags.Flag
 
 class DslPreferenceFragment(
-    private val flagPreferenceProvider: FlagPreferenceProvider,
+    private val flagPreferenceProvider: FlagPreferenceProvider = FlagPreferenceProvider.Empty,
     private val init: DslPreferenceFragment.() -> Unit = {}
 ) : PreferenceFragmentCompat() {
 
     var onPreferencesCreated: ((DslPreferenceFragment) -> Unit)? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         init()
@@ -34,8 +29,8 @@ class DslPreferenceFragment(
         set(flag) {
             key = flag.key
             setting = Setting(
-                getter = { flagPreferenceProvider.getBoolean(flag) },
-                setter = { value -> flagPreferenceProvider.setBoolean(flag, value) }
+                getter = { flagPreferenceProvider.getFlag(flag) },
+                setter = { value -> flagPreferenceProvider.putFlag(flag, value) }
             )
         }
 
@@ -43,10 +38,10 @@ class DslPreferenceFragment(
         get() = noGetter()
         set(flag) {
             key = flag.key
-            arrayEntries = flag.cls.enumConstants as Array<*>
+            arrayEntries = flag.values
             stringSetting = Setting(
-                getter = { flagPreferenceProvider.getEnumAsString(flag) },
-                setter = { value -> flagPreferenceProvider.setString(flag, value) }
+                getter = { flagPreferenceProvider.getFlagString(flag) },
+                setter = { value -> flagPreferenceProvider.putFlagString(flag, value) }
             )
         }
 
@@ -55,8 +50,8 @@ class DslPreferenceFragment(
         set(flag) {
             key = flag.key
             setting = Setting(
-                getter = { flagPreferenceProvider.getString(flag) },
-                setter = { value -> flagPreferenceProvider.setString(flag, value) }
+                getter = { flagPreferenceProvider.getFlagString(flag) },
+                setter = { value -> flagPreferenceProvider.putFlagString(flag, value) }
             )
         }
 }

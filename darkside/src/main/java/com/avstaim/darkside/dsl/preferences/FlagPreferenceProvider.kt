@@ -1,23 +1,21 @@
-// Copyright (c) 2020 Yandex LLC. All rights reserved.
-// Author: Alex Sher <avstaim@yandex-team.ru>
-
 package com.avstaim.darkside.dsl.preferences
 
-import com.avstaim.darkside.flags.BooleanFlag
-import com.avstaim.darkside.flags.EnumFlag
 import com.avstaim.darkside.flags.Flag
-import com.avstaim.darkside.flags.LongFlag
 
 interface FlagPreferenceProvider {
 
-    fun getBoolean(flag: BooleanFlag): Boolean
-    fun setBoolean(flag: BooleanFlag, value: Boolean)
+    fun <T> putFlag(flag: Flag<T>, value: T)
+    fun <T> getFlag(flag: Flag<T>) : T
 
-    fun <T> getString(flag: Flag<T>): String
-    fun <T> setString(flag: Flag<T>, value: String?)
+    fun <T> getFlagString(flag: Flag<T>): String
+    fun <T> putFlagString(flag: Flag<T>, value: String?)
 
-    fun getLong(flag: LongFlag) = getString(flag).toLong()
+    object Empty : FlagPreferenceProvider {
 
-    fun <T : Enum<T>> getEnum(flag: EnumFlag<T>): T
-    fun getEnumAsString(flag: EnumFlag<*>): String
+        override fun <T> putFlag(flag: Flag<T>, value: T) = Unit
+        override fun <T> putFlagString(flag: Flag<T>, value: String?) = Unit
+
+        override fun <T> getFlag(flag: Flag<T>): T = error("No flags supported")
+        override fun <T> getFlagString(flag: Flag<T>): String = error("No flags supported")
+    }
 }

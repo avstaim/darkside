@@ -3,7 +3,7 @@ package com.avstaim.darkside.service
 /**
  * Kotlin wrapper for [Log] using inline [isEnabled] checks and inlining lambda.
  *
- * * Used to prevent unneeded logging string calculation when logging is disabled.
+ * Used to prevent unneeded logging string calculation when logging is disabled.
  */
 object KLog {
 
@@ -164,4 +164,4 @@ object KLog {
     }
 }
 
-internal inline fun <T> T.andAlsoLogD(message: (T) -> String): T = also { KLog.d { message(it) } }
+inline fun <T> T.andAlsoLogD(message: (T) -> String): T = also { KLog.d { message(it) } }

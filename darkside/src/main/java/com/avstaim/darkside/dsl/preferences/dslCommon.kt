@@ -1,6 +1,3 @@
-// Copyright (c) 2018 Yandex LLC. All rights reserved.
-// Author: Alex Sher <avstaim@yandex-team.ru>
-
 package com.avstaim.darkside.dsl.preferences
 
 import android.content.Context
