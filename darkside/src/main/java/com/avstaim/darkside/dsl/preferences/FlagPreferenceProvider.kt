@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.avstaim.darkside.dsl.preferences
 
 import com.avstaim.darkside.flags.Flag

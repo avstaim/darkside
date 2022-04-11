@@ -54,4 +54,14 @@ class DslPreferenceFragment(
                 setter = { value -> flagPreferenceProvider.putFlagString(flag, value) }
             )
         }
+
+    var TextWithSuggestsPreference.flag: Flag<*>
+        get() = noGetter()
+        set(flag) {
+            key = flag.key
+            setting = Setting(
+                getter = { flagPreferenceProvider.getFlagString(flag) },
+                setter = { value -> flagPreferenceProvider.putFlagString(flag, value) }
+            )
+        }
 }

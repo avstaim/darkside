@@ -1,4 +1,3 @@
-
 @file:Suppress("NOTHING_TO_INLINE", "unused")
 
 package com.avstaim.darkside.dsl.resource

@@ -1,17 +1,26 @@
-@file:Suppress("NOTHING_TO_INLINE")
+@file:Suppress("NOTHING_TO_INLINE", "unused")
 
 package com.avstaim.darkside.service
 
 import android.os.Build
 import android.os.Looper
+import com.avstaim.darkside.service.KAssert.isEnabled
 
 /**
- * Kotlin wrapper for [Assert] using inline [isEnabled] checks and inlining lambdas.
+ * Kotlin assertion wrapper, using inline [isEnabled] checks and inlining lambdas.
  */
 object KAssert {
 
-    @field:Volatile
-    var isEnabled: Boolean = false
+    /**
+     * Use delegate for assertion failure calls.
+     */
+    var delegate: AssertionDelegate = AssertionDelegate.NoOp
+
+    var isEnabled: Boolean
+        get() = delegate.isEnabled
+        set(value) {
+            delegate = if (value) AssertionDelegate.Default else AssertionDelegate.NoOp
+        }
 
     /**
      * Fails with the given message.
@@ -154,10 +163,7 @@ object KAssert {
     /**
      * For inlining purposes only. No direct calls.
      */
-    fun doFail(message: String?, cause: Throwable? = null): Nothing =
-        throw AssertionError(message ?: "").also {
-            it.initCause(cause)
-        }
+    fun doFail(message: String?, cause: Throwable? = null) = delegate.failAssert(message, cause)
 
     /**
      * For inlining purposes only. No direct calls.
@@ -192,7 +198,7 @@ object KAssert {
         failSame(message)
     }
 
-    private fun doFailNotEquals(message: String?, expected: Any?, actual: Any?): Nothing =
+    private fun doFailNotEquals(message: String?, expected: Any?, actual: Any?) =
         doFail(format(message, expected, actual))
 
     private fun format(message: String?, expected: Any?, actual: Any?): String {

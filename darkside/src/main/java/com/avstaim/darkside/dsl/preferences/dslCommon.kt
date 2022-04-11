@@ -1,6 +1,11 @@
+@file:Suppress("unused")
+
 package com.avstaim.darkside.dsl.preferences
 
 import android.content.Context
+import androidx.annotation.ArrayRes
+import androidx.annotation.IdRes
+import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceFragmentCompat
@@ -12,35 +17,35 @@ import com.avstaim.darkside.cookies.noGetter
  * Common code to use for preferences DSL.
  */
 
-val PreferenceFragmentCompat.preferenceContext: Context get() = preferenceManager.context
+inline val PreferenceFragmentCompat.preferenceContext: Context get() = preferenceManager.context
 
-fun PreferenceFragmentCompat.preferenceScreen(init: PreferenceScreen.() -> Unit) {
+inline fun PreferenceFragmentCompat.preferenceScreen(init: PreferenceScreen.() -> Unit) {
     preferenceScreen = preferenceManager.createPreferenceScreen(preferenceContext)
     preferenceScreen.init()
 }
 
-fun PreferenceGroup.preferenceCategory(init: PreferenceCategory.() -> Unit): PreferenceCategory {
+inline fun PreferenceGroup.preferenceCategory(init: PreferenceCategory.() -> Unit): PreferenceCategory {
     val category = PreferenceCategory(context)
     addPreference(category)
     category.init()
     return category
 }
 
-fun PreferenceGroup.preference(init: Preference.() -> Unit): Preference {
+inline fun PreferenceGroup.preference(init: Preference.() -> Unit): Preference {
     val preference = Preference(context)
     preference.init()
     addPreference(preference)
     return preference
 }
 
-fun Preference.onClick(listener: (Preference) -> Unit) {
+inline fun Preference.onClick(crossinline listener: (Preference) -> Unit) {
     onPreferenceClickListener = Preference.OnPreferenceClickListener { preference ->
         listener(preference)
         true
     }
 }
 
-fun Preference.onChanged(listener: (Any) -> Unit) {
+inline fun Preference.onChanged(crossinline listener: (Any) -> Unit) {
     val wrapped = onPreferenceChangeListener
     onPreferenceChangeListener = Preference.OnPreferenceChangeListener { preference, newValue ->
         (wrapped?.onPreferenceChange(preference, newValue) ?: true).also {
@@ -49,14 +54,38 @@ fun Preference.onChanged(listener: (Any) -> Unit) {
     }
 }
 
-var Preference.titleResource: Int
+inline var Preference.titleResource: Int
     get() = noGetter()
     set(value) {
         title = context.resources.getString(value)
     }
 
-var Preference.keyResource: Int
+inline var Preference.keyResource: Int
     get() = noGetter()
     set(value) {
         key = context.resources.getString(value)
     }
+
+
+inline var ListPreference.entryResources: Pair<Int, Int>
+    get() = noGetter()
+    set(value) {
+        setEntries(value.first)
+        setEntryValues(value.second)
+    }
+
+inline var ListPreference.entryTitleResource: Int
+    get() = noGetter()
+    set(@ArrayRes value) {
+        setEntries(value)
+    }
+
+inline var ListPreference.entryValueResource: Int
+    get() = noGetter()
+    set(@ArrayRes value) {
+        setEntryValues(value)
+    }
+
+inline var Preference.viewId: Int
+    get() = noGetter()
+    set(@IdRes value) = setViewId(value)

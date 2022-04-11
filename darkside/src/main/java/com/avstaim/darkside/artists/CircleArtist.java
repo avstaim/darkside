@@ -1,6 +1,3 @@
-// Copyright (c) 2019 Yandex LLC. All rights reserved.
-// Author: Alex Sher <avstaim@yandex-team.ru>
-
 package com.avstaim.darkside.artists;
 
 import android.graphics.Canvas;

@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.avstaim.darkside.cookies.interfaces
 
 fun interface Bindable<T> {
