@@ -48,7 +48,6 @@ fun PreferenceGroup.urlPreference(
 ): TextWithSuggestsPreference {
     dependencyKey?.let { dependency = it }
     return TextWithSuggestsPreference(context).apply {
-        isPersistent = false
         init()
         addPreference(this)
     }
@@ -111,7 +110,6 @@ private fun PreferenceGroup.textPreferenceInternal(
     dependencyKey: String?
 ) =
     with(EditTextPreference(context)) {
-        isPersistent = false
         dialogLayoutResource = res
 
         init()
@@ -129,6 +127,7 @@ var EditTextPreference.setting: Setting<String?>
     get() = noGetter()
     set(value) {
         val initialValue = value.getter()
+        isPersistent = false
         summary = initialValue
         text = initialValue
         onPreferenceChangeListener = OnPreferenceChangeListener { _, newValue ->
@@ -143,6 +142,7 @@ var EditTextPreference.intSetting: Setting<Int>
     get() = noGetter()
     set(value) {
         val initialValue = value.getter().toString()
+        isPersistent = false
         summary = initialValue
         text = initialValue
         onPreferenceChangeListener = OnPreferenceChangeListener { _, newValue ->
@@ -157,6 +157,7 @@ var EditTextPreference.longSetting: Setting<Long>
     get() = noGetter()
     set(value) {
         val initialValue = value.getter().toString()
+        isPersistent = false
         summary = initialValue
         text = initialValue
         onPreferenceChangeListener = OnPreferenceChangeListener { _, newValue ->

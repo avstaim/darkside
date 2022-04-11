@@ -14,7 +14,6 @@ import com.avstaim.darkside.cookies.noGetter
 
 fun PreferenceGroup.switchPreference(dependencyKey: String? = null, init: SwitchPreference.() -> Unit): SwitchPreference =
         with(SwitchPreference(context)) {
-            isPersistent = false
             init()
             addPreference(this)
             dependencyKey?.let { dependency = it }
@@ -24,6 +23,7 @@ fun PreferenceGroup.switchPreference(dependencyKey: String? = null, init: Switch
 var TwoStatePreference.setting: Setting<Boolean>
     get() = noGetter()
     set(value) {
+        isPersistent = false
         isChecked = value.getter()
         onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
             value.setter(newValue as Boolean)

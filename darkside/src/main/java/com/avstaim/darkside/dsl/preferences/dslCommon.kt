@@ -66,7 +66,6 @@ inline var Preference.keyResource: Int
         key = context.resources.getString(value)
     }
 
-
 inline var ListPreference.entryResources: Pair<Int, Int>
     get() = noGetter()
     set(value) {
