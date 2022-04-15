@@ -9,7 +9,7 @@ import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import androidx.annotation.StyleRes
 import androidx.appcompat.view.ContextThemeWrapper
-import splitties.views.inflate
+import com.avstaim.darkside.cookies.ui.inflate
 
 const val NO_THEME = 0
 const val NO_STYLE_RES = 0
@@ -78,4 +78,8 @@ inline fun <reified V : View> ViewBuilder.xmlLayout(
     @IdRes id: Int = View.NO_ID,
     @StyleRes themeRes: Int = NO_THEME,
     init: V.() -> Unit = {}
-): V = view<V>(id = id, themeRes = themeRes, factory = simpleFactory { ctx -> ctx.inflate(xmlLayoutRes) }).apply(init)
+): V = view<V>(
+    id = id,
+    themeRes = themeRes,
+    factory = simpleFactory { ctx -> ctx.inflate(xmlLayoutRes) },
+).apply(init)

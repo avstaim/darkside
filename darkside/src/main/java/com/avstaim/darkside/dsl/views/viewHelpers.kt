@@ -110,34 +110,6 @@ fun View.onLongClick(value: suspend () -> Unit) {
     }
 }
 
-var View.leftPadding: Int
-    get() = paddingLeft
-    set(value) = setPadding(value, paddingTop, paddingRight, paddingBottom)
-
-var View.rightPadding: Int
-    get() = paddingRight
-    set(value) = setPadding(paddingLeft, paddingTop, value, paddingBottom)
-
-var View.topPadding: Int
-    get() = paddingTop
-    set(value) = setPadding(paddingLeft, value, paddingRight, paddingBottom)
-
-var View.bottomPadding: Int
-    get() = paddingBottom
-    set(value) = setPadding(paddingLeft, paddingTop, paddingRight, value)
-
-var View.padding: Int
-    get() = noGetter()
-    set(value) = setPadding(value, value, value, value)
-
-var View.verticalPadding: Int
-    get() = noGetter()
-    set(value) = setPadding(paddingLeft, value, paddingRight, value)
-
-var View.horizontalPadding: Int
-    get() = noGetter()
-    set(value) = setPadding(value, paddingTop, value, paddingBottom)
-
 var View.stateListAnimatorResource: Int
     get() = noGetter()
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)

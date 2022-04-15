@@ -22,7 +22,7 @@ abstract class ConstraintLayoutUi private constructor(
         }
     }
 
-    protected fun generateId() = generateViewIdCompat()
+    protected fun generateId() = generateViewId()
 
     abstract fun ConstraintSetBuilder.constraints()
 }

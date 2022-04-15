@@ -23,7 +23,9 @@ suspend inline fun <reified A : Activity, P, reified R> ComponentActivity.reques
             key,
             HelperContract<P, R>(A::class, serializer, parser),
         ) { result ->
-            continuation.resume(result)
+            if (continuation.isActive) {
+                continuation.resume(result)
+            }
         }
         launcher.launch(param)
 
@@ -43,7 +45,9 @@ suspend inline fun <reified R> ComponentActivity.requestActivityForResult(
             key,
             HelperContractSimple(intent, parser),
         ) { result ->
-            continuation.resume(result)
+            if (continuation.isActive) {
+                continuation.resume(result)
+            }
         }
         launcher.launch(Unit)
 

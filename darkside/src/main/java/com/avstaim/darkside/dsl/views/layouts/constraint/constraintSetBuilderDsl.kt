@@ -17,7 +17,6 @@ import com.avstaim.darkside.cookies.noGetter
 import com.avstaim.darkside.dsl.views.Transitions
 import com.avstaim.darkside.dsl.views.layouts.constraint.ConstraintSetBuilder.Connection.BasicConnection
 import com.avstaim.darkside.dsl.views.layouts.constraint.ConstraintSetBuilder.Side
-import splitties.views.generateViewId
 
 /**
  * Anko-inspired DSL constraint builder for [ConstraintLayout].

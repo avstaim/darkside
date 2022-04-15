@@ -6,7 +6,7 @@ import android.app.Activity
 import android.content.Context
 import android.view.View
 import androidx.annotation.LayoutRes
-import splitties.views.inflate
+import com.avstaim.darkside.cookies.ui.inflate
 
 interface Ui<V : View> {
     val ctx: Context

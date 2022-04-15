@@ -1,5 +1,5 @@
 
-@file:Suppress("LeakingThis")
+@file:Suppress("LeakingThis", "unused")
 
 package com.avstaim.darkside.dsl.views.idepreview
 
@@ -12,21 +12,21 @@ import android.widget.FrameLayout
 import androidx.annotation.StyleRes
 import com.avstaim.darkside.R
 import com.avstaim.darkside.cookies.dp
+import com.avstaim.darkside.cookies.illegalArg
+import com.avstaim.darkside.cookies.unsupported
 import com.avstaim.darkside.dsl.views.NO_THEME
 import com.avstaim.darkside.dsl.views.Ui
+import com.avstaim.darkside.dsl.views.backgroundColor
+import com.avstaim.darkside.dsl.views.gravityCenterVertical
 import com.avstaim.darkside.dsl.views.layouts.frameLayoutParams
 import com.avstaim.darkside.dsl.views.matchParent
+import com.avstaim.darkside.dsl.views.padding
+import com.avstaim.darkside.dsl.views.str
+import com.avstaim.darkside.dsl.views.strArray
+import com.avstaim.darkside.dsl.views.styledColor
 import com.avstaim.darkside.dsl.views.textView
 import com.avstaim.darkside.dsl.views.ui
 import com.avstaim.darkside.dsl.views.wrapCtxIfNeeded
-import splitties.exceptions.illegalArg
-import splitties.exceptions.unsupported
-import splitties.resources.str
-import splitties.resources.strArray
-import splitties.resources.styledColor
-import splitties.views.backgroundColor
-import splitties.views.gravityCenterVertical
-import splitties.views.padding
 import java.lang.reflect.Constructor
 import java.lang.reflect.Method
 import java.lang.reflect.Proxy
@@ -91,9 +91,10 @@ open class UiPreView @JvmOverloads constructor(
             if (createUi == null) {
                 init(this.context, attrs, defStyleAttr)
             } else {
-                addView(createUi(this.context.wrapCtxIfNeeded(styleRes)).root, frameLayoutParams(
-                    matchParent, matchParent
-                )
+                addView(
+                    createUi(this.context.wrapCtxIfNeeded(styleRes)).root, frameLayoutParams(
+                        matchParent, matchParent
+                    )
                 )
             }
         } catch (exception: IllegalArgumentException) {
