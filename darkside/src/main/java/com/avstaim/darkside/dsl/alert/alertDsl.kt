@@ -26,6 +26,9 @@ inline fun Context.alert(style: Int = -1, init: AlertBuilder.() -> Unit): AlertB
     style,
 ).apply { init() }
 
+inline fun Context.showAlert(style: Int = -1, init: AlertBuilder.() -> Unit) =
+    alert(style, init).show()
+
 class AlertBuilder(val ctx: Context, style: Int) {
     private val builder = if (style == -1) AlertDialog.Builder(ctx) else AlertDialog.Builder(ctx, style)
 

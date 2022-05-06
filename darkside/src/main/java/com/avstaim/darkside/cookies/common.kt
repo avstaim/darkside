@@ -65,3 +65,16 @@ inline fun <T, R> T.runUnless(condition: Boolean, block: T.() -> R): R? {
  */
 @Suppress("NOTHING_TO_INLINE")
 inline fun <T> T?.ignoreReturnValue() = Unit
+
+/**
+ * Same as [apply], but calling only if criterion is `true`.
+ */
+inline fun <T> T.applyIf(criterion: Boolean, block: T.() -> Unit): T =
+    if (criterion) apply(block) else this
+
+/**
+ * Same as [also], but calling only if criterion is `true`.
+ */
+inline fun <T> T.alsoIf(criterion: Boolean, block: (T) -> Unit): T =
+    if (criterion) also(block) else this
+

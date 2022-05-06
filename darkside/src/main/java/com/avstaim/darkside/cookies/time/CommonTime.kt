@@ -2,6 +2,9 @@
 
 package com.avstaim.darkside.cookies.time
 
+import android.os.Build
+import androidx.annotation.RequiresApi
+import java.time.Duration
 import java.util.concurrent.TimeUnit
 import kotlin.math.roundToLong
 
@@ -104,3 +107,6 @@ inline class CommonTime(private val durationMs: Long) : Comparable<CommonTime> {
         val ZERO = CommonTime(durationMs = 0L)
     }
 }
+
+@RequiresApi(Build.VERSION_CODES.O)
+fun CommonTime.asDuration(): Duration = Duration.ofMillis(millis)
