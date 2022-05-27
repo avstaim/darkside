@@ -17,24 +17,26 @@ import kotlin.reflect.KProperty
  */
 inline fun <reified T : Any> SharedPreferences.optionalPreference(
     defValue: T? = null,
+    name: String? = null,
 ): ReadWriteProperty<Any?, T?> =
-    OptionalSharedPreferencesProperty(this, T::class, defValue)
+    OptionalSharedPreferencesProperty(this, T::class, defValue, name)
 
 class OptionalSharedPreferencesProperty<T : Any>(
     private val sharedPreferences: SharedPreferences,
     private val klass: KClass<T>,
     private val defValue: T?,
+    private val name: String?,
 ): ReadWriteProperty<Any?, T?> {
 
     private var cachedValue: T? = null
 
     override fun getValue(thisRef: Any?, property: KProperty<*>): T? {
-        return cachedValue ?: readValue(property.name).also { cachedValue = it } ?: error("internal error")
+        return cachedValue ?: readValue(name ?: property.name).also { cachedValue = it } ?: error("internal error")
     }
 
     override fun setValue(thisRef: Any?, property: KProperty<*>, value: T?) {
         cachedValue = value
-        writeValue(property.name, value)
+        writeValue(name ?: property.name, value)
     }
 
     private fun readValue(name: String): T? =

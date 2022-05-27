@@ -1,8 +1,10 @@
+@file:Suppress("unused")
+
 package com.avstaim.darkside.cookies
 
 import kotlin.reflect.KClass
 
-internal val Exception.runtimeException: RuntimeException
+internal val Throwable.runtimeException: RuntimeException
     get() = if (this is RuntimeException) this else RuntimeException(this)
 
 internal inline infix fun <T> (() -> T).invokeCatching(catchBlock: (Throwable) -> T): T =

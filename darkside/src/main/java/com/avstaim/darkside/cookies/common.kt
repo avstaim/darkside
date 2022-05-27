@@ -2,9 +2,19 @@
 
 package com.avstaim.darkside.cookies
 
+/**
+ * Checks if optional is `null`
+ */
 inline fun <T> T?.isNull(): Boolean = this == null
+
+/**
+ * Checks if optional is not `null`
+ */
 inline fun <T> T?.isNotNull(): Boolean = this != null
 
+/**
+ * Links to itself as function. To use as property reference.
+ */
 inline fun <T> itself(t: T): T = t
 
 /**
