@@ -2,9 +2,11 @@
 buildscript {
     ext {
         kotlin_version = "1.6.10"
-        artifactory_url = "https://artifactory.yandex.net/artifactory/yandex_mobile_snapshots/"
+        artifactory_url_snapshot = "https://artifactory.yandex.net/artifactory/yandex_mobile_snapshots/"
+        artifactory_url_release = "https://artifactory.yandex.net/artifactory/yandex_mobile_releases/"
 
-        libVersion = "20220426"
+        isRelease = false
+        libVersion = "20220527"
     }
     repositories {
         google()
@@ -41,7 +43,11 @@ subprojects {
                             username 'yandexmobiledeploy'
                             password 'yandexmobiledeploy'
                         }
-                        url artifactory_url
+                        if (isRelease) {
+                            url artifactory_url_release
+                        } else {
+                            url artifactory_url_snapshot
+                        }
                     }
                 }
             }

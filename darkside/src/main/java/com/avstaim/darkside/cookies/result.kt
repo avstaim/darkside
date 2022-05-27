@@ -10,6 +10,12 @@ fun <T> Exception.asFailedResult(): Result<T> = Result.failure(this)
 
 fun <T> T?.asResult(): Result<T> = this?.asSuccessResult() ?: Result.failure(NullPointerException())
 
+inline fun <R, T> Result<T>.flatMap(transform: (value: T) -> Result<R>): Result<R> =
+    fold(
+        onSuccess = transform,
+        onFailure = { Result.failure(it) },
+    )
+
 inline fun <R, T> Result<T>.flatMapCatching(transform: (value: T) -> Result<R>): Result<R> =
     mapCatching {
         transform(it).getOrThrow()
