@@ -18,14 +18,16 @@ import kotlin.reflect.KProperty
 inline fun <reified T : Any> SharedPreferences.preference(
     defValue: T? = null,
     name: String? = null,
+    commit: Boolean = false,
 ): ReadWriteProperty<Any?, T> =
-    SharedPreferencesProperty(this, T::class, defValue, name)
+    SharedPreferencesProperty(this, T::class, defValue, name, commit)
 
 class SharedPreferencesProperty<T : Any>(
     private val sharedPreferences: SharedPreferences,
     private val klass: KClass<T>,
     private val defValue: T?,
     private val name: String?,
+    private val commit: Boolean,
 ): ReadWriteProperty<Any?, T> {
 
     private var cachedValue: T? = null
@@ -51,7 +53,7 @@ class SharedPreferencesProperty<T : Any>(
         } as T?
 
     private fun writeValue(name: String, value: T?) {
-        sharedPreferences.edit {
+        sharedPreferences.edit(commit) {
             when (value) {
                 is String -> putString(name, value)
                 is Boolean -> putBoolean(name, value)
