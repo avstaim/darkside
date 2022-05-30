@@ -33,7 +33,7 @@ class OptionalSharedPreferencesProperty<T : Any>(
     private var cachedValue: T? = null
 
     override fun getValue(thisRef: Any?, property: KProperty<*>): T? {
-        return cachedValue ?: readValue(name ?: property.name).also { cachedValue = it } ?: error("internal error")
+        return cachedValue ?: readValue(name ?: property.name).also { cachedValue = it }
     }
 
     override fun setValue(thisRef: Any?, property: KProperty<*>, value: T?) {
