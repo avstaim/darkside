@@ -98,6 +98,31 @@ inline fun <reified T> SharedPreferences.optionalPreference(
         writer = { it?.let(writer) ?: "" },
     )
 
+/**
+ * Delegates optional (nullable) serializable property to save to [SharedPreferences].
+ *
+ * Usage:
+ *
+ * val/var myProperty by sharedPreferences.optionalPreference(defaultValue, reader, writer)
+ *
+ * @param writer lambda to serialize given type [T] to [String]
+ * @param reader lambda to deserialize [String] to given type [T]
+ */
+inline fun <reified T> SharedPreferences.optionalPreferenceAlternate(
+    default: T? = null,
+    name: String? = null,
+    commit: Boolean = false,
+    noinline writer: (T?) -> String,
+    noinline reader: (String) -> T?,
+): ReadWriteProperty<Any?, T?> =
+    StringPreferenceProperty(
+        sharedPreferences = this,
+        defaultValue = default,
+        name, commit,
+        reader = reader,
+        writer = writer,
+    )
+
 @PublishedApi
 internal class StringPreferenceProperty<T>(
     private val sharedPreferences: SharedPreferences,
