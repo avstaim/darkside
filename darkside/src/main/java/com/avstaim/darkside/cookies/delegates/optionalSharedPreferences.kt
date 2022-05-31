@@ -15,6 +15,13 @@ import kotlin.reflect.KProperty
  *
  * NB! Only String, Boolean, Float, Int, Long or Set<String> are supported.
  */
+@Deprecated(
+    message = "Use stringPreference, intPreference, ...",
+    replaceWith = ReplaceWith(
+        "optionalPreference(defValue, name, commit, reader = TODO(), writer = TODO())",
+        "com.avstaim.darkside.cookies.delegates.preference.optionalPreference"
+    )
+)
 inline fun <reified T : Any> SharedPreferences.optionalPreference(
     defValue: T? = null,
     name: String? = null,
@@ -22,6 +29,7 @@ inline fun <reified T : Any> SharedPreferences.optionalPreference(
 ): ReadWriteProperty<Any?, T?> =
     OptionalSharedPreferencesProperty(this, T::class, defValue, name, commit)
 
+@Deprecated("Use com.avstaim.darkside.cookies.delegates.preference.*")
 class OptionalSharedPreferencesProperty<T : Any>(
     private val sharedPreferences: SharedPreferences,
     private val klass: KClass<T>,

@@ -1,4 +1,4 @@
-@file:Suppress("unused")
+@file:Suppress("unused", "NOTHING_TO_INLINE")
 
 package com.avstaim.darkside.cookies.delegates
 
@@ -15,6 +15,13 @@ import kotlin.reflect.KProperty
  *
  * NB! Only String, Boolean, Float, Int, Long or Set<String> are supported.
  */
+@Deprecated(
+    message = "Use stringPreference, intPreference, ...",
+    replaceWith = ReplaceWith(
+        "preference(defValue, name, commit, reader = TODO(), writer = TODO())",
+        "com.avstaim.darkside.cookies.delegates.preference.preference"
+    )
+)
 inline fun <reified T : Any> SharedPreferences.preference(
     defValue: T? = null,
     name: String? = null,
@@ -22,6 +29,7 @@ inline fun <reified T : Any> SharedPreferences.preference(
 ): ReadWriteProperty<Any?, T> =
     SharedPreferencesProperty(this, T::class, defValue, name, commit)
 
+@Deprecated("Use com.avstaim.darkside.cookies.delegates.preference.*")
 class SharedPreferencesProperty<T : Any>(
     private val sharedPreferences: SharedPreferences,
     private val klass: KClass<T>,
@@ -68,3 +76,4 @@ class SharedPreferencesProperty<T : Any>(
 
     private inline fun <reified V> getDefaultValue(fallback: V): V = defValue as? V ?: fallback
 }
+
