@@ -87,15 +87,15 @@ inline fun <reified T> SharedPreferences.optionalPreference(
     default: T? = null,
     name: String? = null,
     commit: Boolean = false,
-    noinline writer: (T?) -> String,
-    noinline reader: (String) -> T?,
+    noinline writer: (T) -> String,
+    noinline reader: (String) -> T,
 ): ReadWriteProperty<Any?, T?> =
     StringPreferenceProperty(
         sharedPreferences = this,
         defaultValue = default,
         name, commit,
-        reader = reader,
-        writer = writer,
+        reader = { reader(it) },
+        writer = { it?.let(writer) ?: "" },
     )
 
 @PublishedApi
