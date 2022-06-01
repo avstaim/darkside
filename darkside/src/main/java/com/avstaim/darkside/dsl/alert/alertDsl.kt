@@ -30,7 +30,13 @@ inline fun Context.showAlert(style: Int = -1, init: AlertBuilder.() -> Unit) =
     alert(style, init).show()
 
 class AlertBuilder(val ctx: Context, style: Int) {
-    private val builder = if (style == -1) AlertDialog.Builder(ctx) else AlertDialog.Builder(ctx, style)
+
+    @PublishedApi
+    internal val builder = if (style == -1) {
+        AlertDialog.Builder(ctx)
+    } else {
+        AlertDialog.Builder(ctx, style)
+    }
 
     var title: CharSequence
         get() = noGetter()
@@ -69,7 +75,7 @@ class AlertBuilder(val ctx: Context, style: Int) {
         set(value) { builder.setCancelable(value) }
 
 
-    fun customView(init: ViewBuilder.() -> Unit) {
+    inline fun customView(init: ViewBuilder.() -> Unit) {
         AlertViewBuilder(ctx, this).init()
     }
 
@@ -80,27 +86,28 @@ class AlertBuilder(val ctx: Context, style: Int) {
     fun onKeyPressed(handler: (dialog: DialogInterface, keyCode: Int, e: KeyEvent) -> Boolean) {
         builder.setOnKeyListener(handler)
     }
-    fun positiveButton(buttonText: String, onClicked: () -> Unit) {
+
+    inline fun positiveButton(buttonText: String, crossinline onClicked: () -> Unit) {
         builder.setPositiveButton(buttonText) { _, _ -> onClicked() }
     }
 
-    fun positiveButton(buttonTextResource: Int, onClicked: () -> Unit) {
+    inline fun positiveButton(buttonTextResource: Int, crossinline onClicked: () -> Unit) {
         builder.setPositiveButton(buttonTextResource) { _, _ -> onClicked() }
     }
 
-    fun negativeButton(buttonText: String, onClicked: (dialog: DialogInterface) -> Unit) {
+    inline fun negativeButton(buttonText: String, crossinline onClicked: (dialog: DialogInterface) -> Unit) {
         builder.setNegativeButton(buttonText) { dialog, _ -> onClicked(dialog) }
     }
 
-    fun negativeButton(buttonTextResource: Int, onClicked: (dialog: DialogInterface) -> Unit) {
+    inline fun negativeButton(buttonTextResource: Int, crossinline onClicked: (dialog: DialogInterface) -> Unit) {
         builder.setNegativeButton(buttonTextResource) { dialog, _ -> onClicked(dialog) }
     }
 
-    fun neutralPressed(buttonText: String, onClicked: (dialog: DialogInterface) -> Unit) {
+    inline fun neutralButton(buttonText: String, crossinline onClicked: (dialog: DialogInterface) -> Unit) {
         builder.setNeutralButton(buttonText) { dialog, _ -> onClicked(dialog) }
     }
 
-    fun neutralPressed(buttonTextResource: Int, onClicked: (dialog: DialogInterface) -> Unit) {
+    inline fun neutralButton(buttonTextResource: Int, crossinline onClicked: (dialog: DialogInterface) -> Unit) {
         builder.setNeutralButton(buttonTextResource) { dialog, _ -> onClicked(dialog) }
     }
 
@@ -109,13 +116,13 @@ class AlertBuilder(val ctx: Context, style: Int) {
         builder.setOnDismissListener(onClicked)
     }
 
-    fun items(items: List<CharSequence>, onItemSelected: (dialog: DialogInterface, index: Int) -> Unit) {
+    inline fun items(items: List<CharSequence>, crossinline onItemSelected: (dialog: DialogInterface, index: Int) -> Unit) {
         builder.setItems(Array(items.size) { i -> items[i].toString() }) { dialog, which ->
             onItemSelected(dialog, which)
         }
     }
 
-    fun <T> items(items: List<T>, onItemSelected: (dialog: DialogInterface, item: T, index: Int) -> Unit) {
+    inline fun <T> items(items: List<T>, crossinline onItemSelected: (dialog: DialogInterface, item: T, index: Int) -> Unit) {
         builder.setItems(Array(items.size) { i -> items[i].toString() }) { dialog, which ->
             onItemSelected(dialog, items[which], which)
         }
@@ -125,9 +132,10 @@ class AlertBuilder(val ctx: Context, style: Int) {
 
     fun show(): AlertDialog = builder.show()
 
-    private class AlertViewBuilder(
+    @PublishedApi
+    internal class AlertViewBuilder(
         override val ctx: Context,
-        val alertBuilder: AlertBuilder,
+        private val alertBuilder: AlertBuilder,
     ) : SimplifiedAddingViewBuilder {
 
         override fun View.addToParent() {
