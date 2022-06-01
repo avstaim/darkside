@@ -74,6 +74,7 @@ class AlertBuilder(val ctx: Context, style: Int) {
         get() = noGetter()
         set(value) { builder.setCancelable(value) }
 
+    private var onShowListener: ((dialog: DialogInterface) -> Unit)? = null
 
     inline fun customView(init: ViewBuilder.() -> Unit) {
         AlertViewBuilder(ctx, this).init()
@@ -116,6 +117,10 @@ class AlertBuilder(val ctx: Context, style: Int) {
         builder.setOnDismissListener(onClicked)
     }
 
+    fun onShow(onShow: (dialog: DialogInterface) -> Unit) {
+        onShowListener = onShow
+    }
+
     inline fun items(items: List<CharSequence>, crossinline onItemSelected: (dialog: DialogInterface, index: Int) -> Unit) {
         builder.setItems(Array(items.size) { i -> items[i].toString() }) { dialog, which ->
             onItemSelected(dialog, which)
@@ -128,9 +133,11 @@ class AlertBuilder(val ctx: Context, style: Int) {
         }
     }
 
-    fun build(): AlertDialog = builder.create()
+    fun build(): AlertDialog = builder.create().also { dialog ->
+        onShowListener?.let(dialog::setOnShowListener)
+    }
 
-    fun show(): AlertDialog = builder.show()
+    fun show(): AlertDialog = build().also(AlertDialog::show)
 
     @PublishedApi
     internal class AlertViewBuilder(

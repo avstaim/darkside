@@ -1,6 +1,6 @@
 package com.avstaim.darkside
 
 /**
- * TODO !!!
+ * Come to the dark side, we have cookies!!!
  */
 object Darkside
