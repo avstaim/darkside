@@ -1,18 +1,15 @@
-// Copyright (c) 2020 Yandex LLC. All rights reserved.
-// Author: Alex Sher <avstaim@yandex-team.ru>
-
 @file:Suppress("unused")
 
 package com.avstaim.darkside.dsl.alert
 
-import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.view.KeyEvent
 import android.view.View
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
+import com.avstaim.darkside.cookies.ignoreReturnValue
 import com.avstaim.darkside.cookies.noGetter
 import com.avstaim.darkside.dsl.views.SimplifiedAddingViewBuilder
 import com.avstaim.darkside.dsl.views.ViewBuilder
@@ -70,71 +67,82 @@ class AlertBuilder(val ctx: Context, style: Int) {
         get() = noGetter()
         set(value) { builder.setView(value) }
 
+    var customViewResource: Int
+        get() = noGetter()
+        set(value) { builder.setView(value) }
+
     var isCancelable: Boolean
         get() = noGetter()
         set(value) { builder.setCancelable(value) }
 
-    private var onShowListener: ((dialog: DialogInterface) -> Unit)? = null
+    private var onShowListener: ((dialog: AlertDialog) -> Unit)? = null
 
     inline fun customView(init: ViewBuilder.() -> Unit) {
         AlertViewBuilder(ctx, this).init()
     }
 
-    fun onCancelled(handler: (DialogInterface) -> Unit) {
-        builder.setOnCancelListener(handler)
-    }
+    inline fun onCancelled(crossinline handler: (AlertDialog) -> Unit) =
+        builder.setOnCancelListener { dialogInterface ->
+            handler(dialogInterface as AlertDialog)
+        }.ignoreReturnValue()
 
-    fun onKeyPressed(handler: (dialog: DialogInterface, keyCode: Int, e: KeyEvent) -> Boolean) {
-        builder.setOnKeyListener(handler)
-    }
+    inline fun onKeyPressed(crossinline handler: (dialog: AlertDialog, keyCode: Int, event: KeyEvent) -> Boolean) =
+        builder.setOnKeyListener { dialogInterface, keyCode, event ->
+            handler(dialogInterface as AlertDialog, keyCode, event)
+        }.ignoreReturnValue()
 
-    inline fun positiveButton(buttonText: String, crossinline onClicked: () -> Unit) {
-        builder.setPositiveButton(buttonText) { _, _ -> onClicked() }
-    }
+    inline fun positiveButton(buttonText: String, crossinline onClicked: (dialog: AlertDialog) -> Unit) =
+        builder.setPositiveButton(buttonText) { dialogInterface, _ ->
+            onClicked(dialogInterface as AlertDialog)
+        }.ignoreReturnValue()
 
-    inline fun positiveButton(buttonTextResource: Int, crossinline onClicked: () -> Unit) {
-        builder.setPositiveButton(buttonTextResource) { _, _ -> onClicked() }
-    }
+    inline fun positiveButton(buttonTextResource: Int, crossinline onClicked: (dialog: AlertDialog) -> Unit) =
+        builder.setPositiveButton(buttonTextResource) { dialogInterface, _ ->
+            onClicked(dialogInterface as AlertDialog)
+        }.ignoreReturnValue()
 
-    inline fun negativeButton(buttonText: String, crossinline onClicked: (dialog: DialogInterface) -> Unit) {
-        builder.setNegativeButton(buttonText) { dialog, _ -> onClicked(dialog) }
-    }
+    inline fun negativeButton(buttonText: String, crossinline onClicked: (dialog: AlertDialog) -> Unit) =
+        builder.setNegativeButton(buttonText) { dialogInterface, _ ->
+            onClicked(dialogInterface as AlertDialog)
+        }.ignoreReturnValue()
 
-    inline fun negativeButton(buttonTextResource: Int, crossinline onClicked: (dialog: DialogInterface) -> Unit) {
-        builder.setNegativeButton(buttonTextResource) { dialog, _ -> onClicked(dialog) }
-    }
+    inline fun negativeButton(buttonTextResource: Int, crossinline onClicked: (dialog: AlertDialog) -> Unit) =
+        builder.setNegativeButton(buttonTextResource) { dialogInterface, _ ->
+            onClicked(dialogInterface as AlertDialog)
+        }.ignoreReturnValue()
 
-    inline fun neutralButton(buttonText: String, crossinline onClicked: (dialog: DialogInterface) -> Unit) {
-        builder.setNeutralButton(buttonText) { dialog, _ -> onClicked(dialog) }
-    }
+    inline fun neutralButton(buttonText: String, crossinline onClicked: (dialog: AlertDialog) -> Unit) =
+        builder.setNeutralButton(buttonText) { dialogInterface, _ ->
+            onClicked(dialogInterface as AlertDialog)
+        }.ignoreReturnValue()
 
-    inline fun neutralButton(buttonTextResource: Int, crossinline onClicked: (dialog: DialogInterface) -> Unit) {
-        builder.setNeutralButton(buttonTextResource) { dialog, _ -> onClicked(dialog) }
-    }
+    inline fun neutralButton(buttonTextResource: Int, crossinline onClicked: (dialog: AlertDialog) -> Unit) =
+        builder.setNeutralButton(buttonTextResource) { dialogInterface, _ ->
+            onClicked(dialogInterface as AlertDialog)
+        }.ignoreReturnValue()
 
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-    fun onDismissed(onClicked: (dialog: DialogInterface) -> Unit) {
-        builder.setOnDismissListener(onClicked)
-    }
+    inline fun onDismissed(crossinline onClicked: (dialog: AlertDialog) -> Unit) =
+        builder.setOnDismissListener { dialogInterface ->
+            onClicked(dialogInterface as AlertDialog)
+        }.ignoreReturnValue()
 
-    fun onShow(onShow: (dialog: DialogInterface) -> Unit) {
+    fun onShow(onShow: (dialog: AlertDialog) -> Unit) {
         onShowListener = onShow
     }
 
-    inline fun items(items: List<CharSequence>, crossinline onItemSelected: (dialog: DialogInterface, index: Int) -> Unit) {
-        builder.setItems(Array(items.size) { i -> items[i].toString() }) { dialog, which ->
-            onItemSelected(dialog, which)
-        }
-    }
+    inline fun items(items: List<CharSequence>, crossinline onItemSelected: (dialog: AlertDialog, index: Int) -> Unit) =
+        builder.setItems(Array(items.size) { i -> items[i].toString() }) { dialogInterface, which ->
+            onItemSelected(dialogInterface as AlertDialog, which)
+        }.ignoreReturnValue()
 
-    inline fun <T> items(items: List<T>, crossinline onItemSelected: (dialog: DialogInterface, item: T, index: Int) -> Unit) {
-        builder.setItems(Array(items.size) { i -> items[i].toString() }) { dialog, which ->
-            onItemSelected(dialog, items[which], which)
-        }
-    }
+    inline fun <T> items(items: List<T>, crossinline onItemSelected: (dialog: AlertDialog, item: T, index: Int) -> Unit) =
+        builder.setItems(Array(items.size) { i -> items[i].toString() }) { dialogInterface, which ->
+            onItemSelected(dialogInterface as AlertDialog, items[which], which)
+        }.ignoreReturnValue()
 
     fun build(): AlertDialog = builder.create().also { dialog ->
-        onShowListener?.let(dialog::setOnShowListener)
+        onShowListener?.invoke(dialog)
     }
 
     fun show(): AlertDialog = build().also(AlertDialog::show)
