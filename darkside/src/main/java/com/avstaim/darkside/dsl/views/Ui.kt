@@ -36,6 +36,7 @@ inline fun <reified V : View> ui(
 }
 
 inline fun Activity.setContentView(ui: Ui<out View>) = setContentView(ui.root)
+inline fun Activity.setContentUi(ui: Ui<out View>) = setContentView(ui.root)
 
 abstract class XmlUi<V: View>(
     final override val ctx: Context,
