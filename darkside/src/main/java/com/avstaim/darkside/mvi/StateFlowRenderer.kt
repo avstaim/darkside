@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package com.avstaim.darkside.cookies.mvi
+package com.avstaim.darkside.mvi
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

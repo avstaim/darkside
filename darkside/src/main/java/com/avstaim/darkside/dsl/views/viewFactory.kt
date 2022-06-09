@@ -35,6 +35,7 @@ import androidx.appcompat.widget.SwitchCompat
 import androidx.appcompat.widget.Toolbar
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.avstaim.darkside.slab.SlotView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.switchmaterial.SwitchMaterial
 import java.lang.reflect.Constructor
@@ -209,6 +210,7 @@ inline fun <reified V : View> createStyledView(
     View::class.java -> View(context, null, styleAttr, styleRes)
     FloatingActionButton::class.java -> FloatingActionButton(context, null, styleAttr)
     SwitchCompat::class.java -> SwitchMaterial(context, null, styleAttr)
+    SlotView::class.java -> SlotView(context, null, styleAttr)
     else -> UnsupportedViewCreator.createStyledView(V::class.java, context, styleAttr, styleRes)
 } as V
 

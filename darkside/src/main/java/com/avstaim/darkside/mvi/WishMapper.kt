@@ -1,4 +1,6 @@
-package com.avstaim.darkside.cookies.mvi
+@file:Suppress("unused")
+
+package com.avstaim.darkside.mvi
 
 fun interface WishMapper<W, S, A> {
 

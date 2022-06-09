@@ -1,4 +1,6 @@
-package com.avstaim.darkside.cookies.mvi
+@file:Suppress("unused")
+
+package com.avstaim.darkside.mvi
 
 import androidx.annotation.CallSuper
 import kotlinx.coroutines.CoroutineScope
@@ -9,10 +11,10 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 
-open class Feature<W, A, S : Any>(
+open class Store<W, A, S : Any>(
     private val reducer: Reducer<S, A>,
     private val actors: Actors<A, S>,
-    private val statelessActors: StatelessActors<A>,
+    private val middlewares: Middlewares<A>,
     private val wishMapper: WishMapper<W, S, A>,
     initialState: S,
 ) {
@@ -44,8 +46,8 @@ open class Feature<W, A, S : Any>(
             .onEach(actions::emit)
             .launchIn(coroutineScope)
 
-        statelessActors.get()
-            .map { actor -> actor.act(actions) }
+        middlewares.get()
+            .map { middleware -> middleware.accept(actions) }
             .merge()
             .onEach(actions::emit)
             .launchIn(coroutineScope)

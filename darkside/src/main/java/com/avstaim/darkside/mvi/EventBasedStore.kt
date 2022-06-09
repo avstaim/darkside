@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package com.avstaim.darkside.cookies.mvi
+package com.avstaim.darkside.mvi
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -8,15 +8,15 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 
-open class EventBasedFeature<E, W, A, S : Any>(
+open class EventBasedStore<E, W, A, S : Any>(
     initialState: S,
     reducer: Reducer<S, A>,
     actors: Actors<A, S>,
-    statelessActors: StatelessActors<A>,
+    middlewares: Middlewares<A>,
     wishMapper: WishMapper<W, S, A>,
     private val events: Flow<E>,
     private val eventsMapper: EventMapper<E, A>,
-) : Feature<W, A, S>(reducer, actors, statelessActors, wishMapper, initialState) {
+) : Store<W, A, S>(reducer, actors, middlewares, wishMapper, initialState) {
 
     override fun wireWith(coroutineScope: CoroutineScope) {
         super.wireWith(coroutineScope)

@@ -36,6 +36,23 @@ inline fun <reified T> Any?.ifIsNot(block: (Any?) -> Unit) {
 }
 
 /**
+ * Allows to smartcast var's on the fly.
+ */
+inline fun <reified T, R> Any?.runIfIs(block: (T) -> R): R? =
+    if (this is T) {
+        block(this)
+    } else null
+
+
+/**
+ * Inverted version of [ifIs].
+ */
+inline fun <reified T, R> Any?.runIfIsNot(block: (Any?) -> R): R? =
+    if (this !is T) {
+        block(this)
+    } else null
+
+/**
  * Just a stub to ignore any function's return value and return [Unit].
  */
 @Suppress("NOTHING_TO_INLINE")
