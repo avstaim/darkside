@@ -22,7 +22,9 @@ android {
     }
 
     kotlinOptions {
-        freeCompilerArgs += "-Xopt-in=com.avstaim.darkside.dsl.views.InternalApi,kotlin.RequiresOptIn"
+        freeCompilerArgs += "-Xopt-in=com.avstaim.darkside.dsl.views.InternalApi"
+        freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
+        freeCompilerArgs += "-Xopt-in=kotlinx.coroutines.DelicateCoroutinesApi"
     }
 }
 

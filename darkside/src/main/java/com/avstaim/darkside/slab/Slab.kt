@@ -2,6 +2,7 @@ package com.avstaim.darkside.slab
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -124,6 +125,9 @@ abstract class Slab<V : View> : SlabLifecycle, CoroutineScope {
         job.cancel()
         dispatcher.reset()
     }
+
+    @CallSuper
+    override fun onConfigurationChanged(newConfig: Configuration?) = Unit
 
     /**
      * See [Slot.insert].

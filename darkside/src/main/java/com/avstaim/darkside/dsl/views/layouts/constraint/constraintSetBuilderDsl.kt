@@ -6,8 +6,10 @@
 package com.avstaim.darkside.dsl.views.layouts.constraint
 
 import android.graphics.PointF
+import android.os.Build
 import android.view.View
 import androidx.annotation.IdRes
+import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.Barrier
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
@@ -17,6 +19,7 @@ import com.avstaim.darkside.cookies.noGetter
 import com.avstaim.darkside.dsl.views.Transitions
 import com.avstaim.darkside.dsl.views.layouts.constraint.ConstraintSetBuilder.Connection.BasicConnection
 import com.avstaim.darkside.dsl.views.layouts.constraint.ConstraintSetBuilder.Side
+import com.avstaim.darkside.slab.SlabSlot
 
 /**
  * Anko-inspired DSL constraint builder for [ConstraintLayout].
@@ -50,6 +53,9 @@ class ConstraintSetBuilder : ConstraintSet() {
     operator fun View.invoke(init: ViewConstraintBuilder.() -> Unit) {
         ViewConstraintBuilder(this.id, this@ConstraintSetBuilder).apply(init)
     }
+
+    @RequiresApi(Build.VERSION_CODES.KITKAT)
+    operator fun SlabSlot.invoke(init: ViewConstraintBuilder.() -> Unit) = currentView.invoke(init)
 
     infix fun Side.of(@IdRes viewId: Int) = when (this) {
         Side.LEFT -> ViewSide.Left(viewId)
