@@ -57,6 +57,27 @@ suspend inline fun <reified R> ComponentActivity.requestActivityForResult(
     }
 }
 
+suspend inline fun ComponentActivity.requestActivityForResult(
+    key: String = randomKey(),
+    intent: Intent,
+): ActivityResult {
+    return suspendCancellableCoroutine { continuation ->
+        val launcher = activityResultRegistry.register(
+            key,
+            HelperContractNoParse(intent),
+        ) { result ->
+            if (continuation.isActive) {
+                continuation.resume(result)
+            }
+        }
+        launcher.launch(Unit)
+
+        continuation.invokeOnCancellation {
+            launcher.unregister()
+        }
+    }
+}
+
 class HelperContract<P, R>(
     private val activityClass: KClass<out Activity>,
     private val serializer: (P) -> Bundle,
@@ -81,5 +102,33 @@ class HelperContractSimple<R>(
     override fun parseResult(resultCode: Int, intent: Intent?): R? = intent?.let(parser)
 }
 
+class HelperContractNoParse(
+    private val intent: Intent,
+) : ActivityResultContract<Unit, ActivityResult>() {
+
+    override fun createIntent(context: Context, input: Unit) = intent
+    override fun parseResult(resultCode: Int, intent: Intent?): ActivityResult =
+        ActivityResult(
+            code = when (resultCode) {
+                Activity.RESULT_OK -> ResultCode.Ok
+                Activity.RESULT_CANCELED -> ResultCode.Cancelled
+                else -> ResultCode.Other(resultCode)
+            },
+            intent = intent,
+        )
+}
+
 fun randomKey(): String =
     (0..(4..32).random()).map { ('a'..'z').random() }.joinToString()
+
+
+sealed interface ResultCode {
+    object Ok : ResultCode
+    object Cancelled : ResultCode
+    class Other(val code: Int) : ResultCode
+}
+
+data class ActivityResult(
+    val code: ResultCode,
+    val intent: Intent?,
+)
