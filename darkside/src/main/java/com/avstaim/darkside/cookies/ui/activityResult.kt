@@ -122,10 +122,10 @@ fun randomKey(): String =
     (0..(4..32).random()).map { ('a'..'z').random() }.joinToString()
 
 
-sealed interface ResultCode {
-    object Ok : ResultCode
-    object Cancelled : ResultCode
-    class Other(val code: Int) : ResultCode
+sealed class ResultCode(val code: Int) {
+    object Ok : ResultCode(Activity.RESULT_OK)
+    object Cancelled : ResultCode(Activity.RESULT_CANCELED)
+    class Other(code: Int) : ResultCode(code)
 }
 
 data class ActivityResult(
