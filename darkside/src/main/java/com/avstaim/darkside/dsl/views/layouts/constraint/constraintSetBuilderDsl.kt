@@ -26,6 +26,7 @@ import com.avstaim.darkside.slab.SlabSlot
  */
 
 fun ConstraintLayout.applyConstraints(init: ConstraintSetBuilder.() -> Unit) {
+    ensureChildrenHaveIds()
     val constraintSet = ConstraintSetBuilder()
     constraintSet.clone(this)
     constraintSet.init()
@@ -34,8 +35,9 @@ fun ConstraintLayout.applyConstraints(init: ConstraintSetBuilder.() -> Unit) {
 
 fun ConstraintLayout.applyConstraintsWithTransition(
     transition: Transition = Transitions.AUTO,
-    init: ConstraintSetBuilder.() -> Unit
+    init: ConstraintSetBuilder.() -> Unit,
 ) {
+    ensureChildrenHaveIds()
     val constraintSet = ConstraintSetBuilder()
     constraintSet.clone(this)
     constraintSet.init()

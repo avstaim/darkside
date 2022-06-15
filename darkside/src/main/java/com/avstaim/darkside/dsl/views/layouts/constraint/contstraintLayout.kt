@@ -39,12 +39,12 @@ class ConstraintLayoutBuilder(context: Context, @AttrRes defStyleAttr: Int, @Sty
 
     fun <T : View> T.constraints(init: AttachedConstraintBuilder.() -> Unit) =
         AttachedConstraintBuilder(this.id, constraintSetBuilder).apply(init)
+}
 
-    private fun ensureChildrenHaveIds() {
-        forEach { child ->
-            if (child.id == -1) {
-                child.id = generateViewIdCompat()
-            }
+internal fun ConstraintLayout.ensureChildrenHaveIds() {
+    forEach { child ->
+        if (child.id == -1) {
+            child.id = generateViewIdCompat()
         }
     }
 }
