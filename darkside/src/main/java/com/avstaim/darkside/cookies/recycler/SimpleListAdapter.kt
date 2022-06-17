@@ -9,7 +9,7 @@ import com.avstaim.darkside.cookies.interfaces.Bindable
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 
-abstract class AbstractSimpleListAdapter<D : Any, VH : SimpleViewHolder<in D, *, *, *>>(
+abstract class AbstractSimpleListAdapter<D : Any, VH : SimpleViewHolder<in D, *, *>>(
     initial: Collection<D>,
 ) : ListAdapter<D, VH>(DiffCallback()), Bindable<Collection<D>> {
 
@@ -38,7 +38,7 @@ abstract class AbstractSimpleListAdapter<D : Any, VH : SimpleViewHolder<in D, *,
     abstract fun createViewHolder(context: Context): VH
 }
 
-class SimpleListAdapter<D : Any, VH : SimpleViewHolder<in D, *, *, *>>(
+open class SimpleListAdapter<D : Any, VH : SimpleViewHolder<in D, *, *>>(
     initial: Collection<D>,
     private val factory: (Context) -> VH,
 ) : AbstractSimpleListAdapter<D, VH>(initial) {
@@ -46,7 +46,7 @@ class SimpleListAdapter<D : Any, VH : SimpleViewHolder<in D, *, *, *>>(
     override fun createViewHolder(context: Context): VH = factory.invoke(context)
 }
 
-fun <D : Any, VH : SimpleViewHolder<in D, *, *, *>> simpleAdapter(
+fun <D : Any, VH : SimpleViewHolder<in D, *, *>> simpleAdapter(
     initial: Collection<D> = emptyList(),
     factory: (Context) -> VH,
 ): SimpleListAdapter<D, VH> = SimpleListAdapter(initial, factory)

@@ -16,7 +16,7 @@ import com.avstaim.darkside.dsl.views.Ui
  * @param H host to dispatch Ui interaction events on
  * @param VT view type to distinguish view holder from others
  */
-abstract class ItemViewHolder<D : Any, V : View, U : Ui<V>, H, VT>(
+abstract class ItemViewHolder<D : Any, U : Ui<out View>, H, VT>(
     private val host: H,
     private val ui: U,
     val viewType: VT,

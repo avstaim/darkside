@@ -12,7 +12,7 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 import kotlin.reflect.KClass
 
-abstract class AbstractSafeListAdapter<D : Any, VT : Enum<VT>, VH : ItemViewHolder<in D, *, *, *, VT>>(
+abstract class AbstractSafeListAdapter<D : Any, VT : Enum<VT>, VH : ItemViewHolder<in D, *, *, VT>>(
     private val vtClass: KClass<VT>,
     initial: Collection<D>,
 ) : ListAdapter<D, VH>(DiffCallback()), Bindable<Collection<D>> {
@@ -46,7 +46,7 @@ abstract class AbstractSafeListAdapter<D : Any, VT : Enum<VT>, VH : ItemViewHold
     abstract fun resolveItemType(item: D): VT
 }
 
-class SafeListAdapter<D : Any, VT : Enum<VT>, VH : ItemViewHolder<in D, *, *, *, VT>>(
+open class SafeListAdapter<D : Any, VT : Enum<VT>, VH : ItemViewHolder<in D, *, *, VT>>(
     vtClass: KClass<VT>,
     initial: Collection<D>,
     private val factory: ViewHolderFactory<D, VT, VH>,
@@ -57,7 +57,7 @@ class SafeListAdapter<D : Any, VT : Enum<VT>, VH : ItemViewHolder<in D, *, *, *,
     override fun resolveItemType(item: D): VT = resolver.resolve(item)
 }
 
-fun interface ViewHolderFactory<D : Any, VT : Enum<VT>, VH : ItemViewHolder<in D, *, *, *, VT>> {
+fun interface ViewHolderFactory<D : Any, VT : Enum<VT>, VH : ItemViewHolder<in D, *, *, VT>> {
 
     fun create(context: Context, viewType: VT): VH
 }
@@ -74,7 +74,7 @@ internal class DiffCallback<D : Any> : DiffUtil.ItemCallback<D>() {
     override fun areContentsTheSame(oldItem: D, newItem: D): Boolean = (oldItem == newItem)
 }
 
-inline fun <D : Any, reified VT : Enum<VT>, VH : ItemViewHolder<in D, *, *, *, VT>> adapter(
+inline fun <D : Any, reified VT : Enum<VT>, VH : ItemViewHolder<in D, *, *, VT>> adapter(
     factory: ViewHolderFactory<D, VT, VH>,
     resolver: ItemTypeResolver<D, VT>,
     initial: Collection<D> = emptyList(),
