@@ -6,7 +6,7 @@ buildscript {
         artifactory_url_release = "https://artifactory.yandex.net/artifactory/yandex_mobile_releases/"
 
         isRelease = false
-        libVersion = "20220614"
+        libVersion = "20220615"
     }
     repositories {
         google()
