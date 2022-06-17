@@ -16,7 +16,7 @@ import com.avstaim.darkside.dsl.views.Ui
  * @param H host to dispatch Ui interaction events on
  * @param VT view type to distinguish view holder from others
  */
-abstract class ItemViewHolder<D : Any, U : Ui<out View>, H, VT>(
+abstract class ItemViewHolder<D : Any, out B : D, U : Ui<out View>, H, out VT>(
     private val host: H,
     private val ui: U,
     val viewType: VT,
@@ -26,10 +26,11 @@ abstract class ItemViewHolder<D : Any, U : Ui<out View>, H, VT>(
      * Don't create objects, use non inlined lambdas, or call methods doing so in this callback
      * as it may be called a lot of times as the user scrolls faster and faster, and allocating
      * memory could affect the UI smoothness.
-     * @see data
+     * @see dataToBind
      * @see bind
      */
-    protected abstract fun U.onBind(data: D, host: H)
+    protected abstract fun U.onBind(dataToBind: @UnsafeVariance B, host: H)
 
-    final override fun bind(data: D) = ui.onBind(data, host)
+    @Suppress("UNCHECKED_CAST")
+    final override fun bind(data: D) = ui.onBind(data as B, host)
 }

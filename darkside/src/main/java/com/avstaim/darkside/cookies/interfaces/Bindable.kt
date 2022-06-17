@@ -2,7 +2,7 @@
 
 package com.avstaim.darkside.cookies.interfaces
 
-fun interface Bindable<T> {
+fun interface Bindable<in T> {
     fun bind(data: T)
 }
 
