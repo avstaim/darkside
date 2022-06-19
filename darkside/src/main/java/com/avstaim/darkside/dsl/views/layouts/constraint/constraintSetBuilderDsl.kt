@@ -247,6 +247,9 @@ open class ViewConstraintBuilder(
 
     infix fun Pair<Side, Side>.of(targetView: View): BasicConnection = this of targetView.id
 
+    @RequiresApi(Build.VERSION_CODES.KITKAT)
+    infix fun Pair<Side, Side>.of(targetSlot: SlabSlot): BasicConnection = this of targetSlot.currentView.id
+
     fun setMargin(side: Side, value: Int) {
         constraintSetBuilder.setMargin(viewId, side.sideId, value)
     }

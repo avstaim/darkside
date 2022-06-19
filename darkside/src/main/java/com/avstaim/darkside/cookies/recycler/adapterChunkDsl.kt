@@ -1,11 +1,12 @@
 @file:RequiresApi(Build.VERSION_CODES.KITKAT)
 @file:Suppress("unused")
 
-package com.avstaim.darkside.cookies.recycler.chunk
+package com.avstaim.darkside.cookies.recycler
 
 import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
+import com.avstaim.darkside.cookies.recycler.AdapterChunk
 import com.avstaim.darkside.slab.BindableSlab
 
 /**
@@ -18,3 +19,8 @@ inline fun <T, reified I : T> adapterChunk(
 
 fun <T : Any> chunkedAdapter(initial: List<T> = emptyList(), vararg chunks: AdapterChunk<T>) =
     ChunkedAdapter(chunks.asList(), initial)
+
+fun <T : Any> simpleAdapter(
+    initial: List<T> = emptyList(),
+    slabFactory: (Context) -> BindableSlab<*, *, T>,
+) = chunkedAdapter(initial, DslAdapterChunk(slabFactory) { true })

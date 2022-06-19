@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package com.avstaim.darkside.cookies.recycler.chunk
+package com.avstaim.darkside.cookies.recycler
 
 import android.annotation.SuppressLint
 import android.os.Build
@@ -9,12 +9,13 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.avstaim.darkside.cookies.interfaces.Bindable
+import com.avstaim.darkside.cookies.recycler.AdapterChunk
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 
 @RequiresApi(Build.VERSION_CODES.KITKAT)
 open class ChunkedAdapter<D : Any>(
-    private val chunks: List<AdapterChunk<D>>,
+    protected open val chunks: List<AdapterChunk<D>> = emptyList(),
     initial: List<D> = emptyList(),
 ) : ListAdapter<D, ChunkViewHolder<D>>(DiffCallback()), Bindable<List<D>> {
 

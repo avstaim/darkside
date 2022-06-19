@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package com.avstaim.darkside.cookies.recycler.chunk
+package com.avstaim.darkside.cookies.recycler
 
 import android.content.Context
 import android.os.Build

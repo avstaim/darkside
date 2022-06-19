@@ -1,11 +1,12 @@
 @file:Suppress("unused")
 @file:RequiresApi(Build.VERSION_CODES.KITKAT)
 
-package com.avstaim.darkside.cookies.recycler.chunk
+package com.avstaim.darkside.cookies.recycler
 
 import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
+import com.avstaim.darkside.cookies.recycler.AdapterChunk
 import com.avstaim.darkside.slab.BindableSlab
 
 @PublishedApi
