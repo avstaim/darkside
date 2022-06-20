@@ -18,10 +18,12 @@ abstract class LayoutUi<V : View>(
 ) : Ui<V>, ViewBuilder by ctx.viewBuilder() {
 
     override val root: V by lazy {
-        layout()
+        layout().apply { initRoot() }
     }
 
     abstract fun ViewBuilder.layout(): V
+
+    open fun V.initRoot() = Unit
 }
 
 class DslUi<V : View>(ctx: Context, private val layoutBuilder: ViewBuilder.() -> V) : LayoutUi<V>(ctx) {

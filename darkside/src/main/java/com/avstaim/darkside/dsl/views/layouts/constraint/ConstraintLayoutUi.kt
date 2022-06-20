@@ -19,10 +19,13 @@ abstract class ConstraintLayoutUi private constructor(
             it.applyConstraints {
                 constraints()
             }
+            it.initRoot()
         }
     }
 
     protected fun generateId() = generateViewId()
 
     abstract fun ConstraintSetBuilder.constraints()
+
+    open fun ConstraintLayout.initRoot() = Unit
 }
