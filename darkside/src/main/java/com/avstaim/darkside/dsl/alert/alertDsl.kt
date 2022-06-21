@@ -7,7 +7,6 @@ import android.graphics.drawable.Drawable
 import android.os.Build
 import android.view.KeyEvent
 import android.view.View
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import com.avstaim.darkside.cookies.ignoreReturnValue
 import com.avstaim.darkside.cookies.noGetter
@@ -121,7 +120,6 @@ class AlertBuilder(val ctx: Context, style: Int) {
             onClicked(dialogInterface as AlertDialog)
         }.ignoreReturnValue()
 
-    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     inline fun onDismissed(crossinline onClicked: (dialog: AlertDialog) -> Unit) =
         builder.setOnDismissListener { dialogInterface ->
             onClicked(dialogInterface as AlertDialog)

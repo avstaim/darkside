@@ -1,12 +1,8 @@
-@file:RequiresApi(Build.VERSION_CODES.KITKAT)
-
 package com.avstaim.darkside.dsl.views
 
-import android.os.Build
 import android.view.View
 import androidx.annotation.AttrRes
 import androidx.annotation.IdRes
-import androidx.annotation.RequiresApi
 import androidx.annotation.StyleRes
 import com.avstaim.darkside.slab.SlabSlot
 import com.avstaim.darkside.slab.SlotView

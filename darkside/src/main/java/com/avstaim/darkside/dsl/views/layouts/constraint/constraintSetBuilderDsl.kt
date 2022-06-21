@@ -6,10 +6,8 @@
 package com.avstaim.darkside.dsl.views.layouts.constraint
 
 import android.graphics.PointF
-import android.os.Build
 import android.view.View
 import androidx.annotation.IdRes
-import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.Barrier
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
@@ -56,7 +54,6 @@ class ConstraintSetBuilder : ConstraintSet() {
         ViewConstraintBuilder(this.id, this@ConstraintSetBuilder).apply(init)
     }
 
-    @RequiresApi(Build.VERSION_CODES.KITKAT)
     operator fun SlabSlot.invoke(init: ViewConstraintBuilder.() -> Unit) = currentView.invoke(init)
 
     infix fun Side.of(@IdRes viewId: Int) = when (this) {
@@ -246,8 +243,6 @@ open class ViewConstraintBuilder(
         constraintSetBuilder.run { (first of viewId) to (second of targetViewId) }
 
     infix fun Pair<Side, Side>.of(targetView: View): BasicConnection = this of targetView.id
-
-    @RequiresApi(Build.VERSION_CODES.KITKAT)
     infix fun Pair<Side, Side>.of(targetSlot: SlabSlot): BasicConnection = this of targetSlot.currentView.id
 
     fun setMargin(side: Side, value: Int) {

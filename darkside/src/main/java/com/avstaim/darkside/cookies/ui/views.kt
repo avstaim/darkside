@@ -3,11 +3,9 @@
 package com.avstaim.darkside.cookies.ui
 
 import android.graphics.Rect
-import android.os.Build
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
-import androidx.annotation.RequiresApi
 import androidx.core.view.doOnLayout
 import com.avstaim.darkside.cookies.Size
 import kotlinx.coroutines.Job
@@ -26,7 +24,6 @@ suspend fun View.waitForLayout() {
     job.join()
 }
 
-@RequiresApi(Build.VERSION_CODES.KITKAT_WATCH)
 fun View.dispatchVisibility(threshold: Size) {
     invalidateShouldShow(threshold)
     setOnApplyWindowInsetsListener { _, insets ->

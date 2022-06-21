@@ -3,9 +3,7 @@
 package com.avstaim.darkside.cookies.recycler
 
 import android.content.Context
-import android.os.Build
 import android.widget.FrameLayout
-import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.avstaim.darkside.cookies.interfaces.Bindable
 import com.avstaim.darkside.dsl.views.matchParent
@@ -13,7 +11,6 @@ import com.avstaim.darkside.slab.Slab
 import com.avstaim.darkside.slab.SlabSlot
 import com.avstaim.darkside.slab.SlotView
 
-@RequiresApi(Build.VERSION_CODES.KITKAT)
 class ChunkViewHolder<T>(
     context: Context,
     private val slab: Slab<*>,

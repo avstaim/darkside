@@ -21,7 +21,6 @@ import android.widget.Space
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.annotation.AttrRes
-import androidx.annotation.RequiresApi
 import androidx.annotation.StyleRes
 import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.appcompat.widget.AppCompatEditText
@@ -172,10 +171,8 @@ inline fun <reified V : View> createView(
                 styleAttr = styleAttr,
             )
         }
-
     }
 
-@RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 @InternalApi
 inline fun <reified V : View> createStyledView(
     context: Context,

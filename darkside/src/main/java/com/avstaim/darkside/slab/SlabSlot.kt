@@ -2,15 +2,12 @@
 
 package com.avstaim.darkside.slab
 
-import android.os.Build
 import android.view.View
-import androidx.annotation.RequiresApi
 import com.avstaim.darkside.service.KAssert
 
 /**
  * Wraps [Slot] and it's [View] for safe usage in ViewHolder pattern.
  */
-@RequiresApi(Build.VERSION_CODES.KITKAT)
 class SlabSlot(initialSlot: Slot) {
 
     private var _currentView: View = if (initialSlot is SlotView) initialSlot else initialSlot.view
@@ -65,7 +62,6 @@ class SlabSlot(initialSlot: Slot) {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.KITKAT)
 private class SlabSlotViewWrapper(
     private val wrapped: SlotView,
     private val onAttach: (SlotView) -> Unit,

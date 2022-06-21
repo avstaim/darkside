@@ -1,20 +1,19 @@
+@file:Suppress("unused")
+
 package com.avstaim.darkside.slab
 
 import android.app.Activity
 import android.content.res.Configuration
-import android.os.Build
 import android.view.View
 import androidx.annotation.CallSuper
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 
 /**
  * Utility helper to get all the the events from [SlabLifecycle] in the single [View].
  */
-@RequiresApi(api = Build.VERSION_CODES.KITKAT)
 internal open class SlabViewLifecycle : SlabLifecycle {
 
-    private var mViewHelper: ViewHelper? = null
+    private var viewHelper: ViewHelper? = null
 
     /**
      * Attaches to the given view. If View is currently visible all corresponding events will be dispatched immediately.
@@ -23,8 +22,7 @@ internal open class SlabViewLifecycle : SlabLifecycle {
      */
     fun attachTo(view: View) {
         detach()
-        mViewHelper = ViewHelper(view)
-        mViewHelper!!.attachToView()
+        viewHelper = ViewHelper(view).also { it.attachToView() }
     }
 
     /**
@@ -58,7 +56,7 @@ internal open class SlabViewLifecycle : SlabLifecycle {
 
     /**
      * Called when the view is detached from the window or activity is destroyed.
-     * [BrickViewLifecycle] is must be able to be freed by GC after that.
+     * [SlabViewLifecycle] is must be able to be freed by GC after that.
      */
     @CallSuper
     override fun onDetach() = Unit
@@ -67,15 +65,15 @@ internal open class SlabViewLifecycle : SlabLifecycle {
      * @return currently attach view or throw if not attached.
      */
     fun requireAttachedView(): View =
-        mViewHelper?.view ?: error("No view in view helper")
+        viewHelper?.view ?: error("No view in view helper")
 
     /**
      * Detached from the currently attached view with all required events.
      * This method is idempotent.
      */
     fun detach() {
-        mViewHelper?.detachFromView()
-        mViewHelper = null
+        viewHelper?.detachFromView()
+        viewHelper = null
     }
 
     override fun onCreate() = Unit

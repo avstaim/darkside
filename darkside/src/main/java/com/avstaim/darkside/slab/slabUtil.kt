@@ -3,9 +3,7 @@
 package com.avstaim.darkside.slab
 
 import android.content.Context
-import android.os.Build
 import android.view.View
-import androidx.annotation.RequiresApi
 import com.avstaim.darkside.cookies.ui.views.SimpleViewStub
 import com.avstaim.darkside.dsl.views.Ui
 import com.avstaim.darkside.dsl.views.ViewBuilder
@@ -21,7 +19,6 @@ import kotlinx.coroutines.launch
 /**
  * Insert slab just in given scope. After the scope is completed/cancelled slab is removed from slot.
  */
-@RequiresApi(Build.VERSION_CODES.KITKAT)
 fun SlabSlot.insertOnScope(slab: Slab<*>, scope: CoroutineScope) {
     val job = scope.coroutineContext[Job]
     if (job == null) {
@@ -43,7 +40,6 @@ fun SlabSlot.insertOnScope(slab: Slab<*>, scope: CoroutineScope) {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.KITKAT)
 fun SlabSlot.clear() = insert(currentView.context.emptySlab())
 
 inline fun <reified V : View> Context.slab(crossinline init: ViewBuilder.() -> V): Slab<V> {
@@ -56,6 +52,4 @@ fun <V : View> V.asSlab(): Slab<V> = ViewSlab(view = this)
 
 private class ViewSlab<V : View>(override val view: V) : Slab<V>()
 
-@RequiresApi(Build.VERSION_CODES.KITKAT)
 fun <V : View> Ui<V>.asSlab(): UiSlab<V, Ui<V>> = DslUiSlab(ui = this)
-

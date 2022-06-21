@@ -16,7 +16,6 @@ import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.annotation.DimenRes
 import androidx.annotation.DrawableRes
-import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
 import com.avstaim.darkside.cookies.activity
@@ -112,7 +111,6 @@ fun View.onLongClick(value: suspend () -> Unit) {
 
 var View.stateListAnimatorResource: Int
     get() = noGetter()
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     set(@AnimatorRes value) {
         stateListAnimator = AnimatorInflater.loadStateListAnimator(context, value)
     }
