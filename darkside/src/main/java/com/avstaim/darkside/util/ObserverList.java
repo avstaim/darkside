@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-package com.avstaim.darkside.slab;
+package com.avstaim.darkside.util;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -26,7 +26,7 @@ import java.util.NoSuchElementException;
  *
  * @param <E> The type of observers that this list should hold.
  */
-class ObserverList<E> implements Iterable<E> {
+public class ObserverList<E> implements Iterable<E> {
 
     /**
      * Extended iterator interface that provides rewind functionality.

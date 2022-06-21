@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.avstaim.darkside.flags
 
 import androidx.annotation.AnyThread

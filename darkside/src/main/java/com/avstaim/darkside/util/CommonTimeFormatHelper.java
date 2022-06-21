@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.avstaim.darkside.cookies.time;
+package com.avstaim.darkside.util;
 
 import android.text.TextUtils;
 import androidx.annotation.NonNull;
@@ -25,7 +25,7 @@ import java.util.ArrayList;
  * Duration formatting utilities and constants. The following table describes the tokens
  * used in the pattern language for formatting.
  */
-class CommonTimeFormatHelper {
+public class CommonTimeFormatHelper {
 
     private CommonTimeFormatHelper() { /* empty */ }
 

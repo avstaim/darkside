@@ -10,6 +10,8 @@ import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.avstaim.darkside.util.MathUtils;
+
 /**
  * Artist, that can draw svg-like paths to given canvas.
  */

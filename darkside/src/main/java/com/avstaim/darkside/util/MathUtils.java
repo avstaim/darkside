@@ -1,4 +1,4 @@
-package com.avstaim.darkside.artists;
+package com.avstaim.darkside.util;
 
 public final class MathUtils {
 
