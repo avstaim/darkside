@@ -1,6 +1,5 @@
 package com.avstaim.darkside.dsl.views
 
-import android.os.Build
 import android.view.View
 
 /**
@@ -10,7 +9,7 @@ import android.view.View
  *
  * @see isRtl
  */
-inline val View.isLtr get() = Build.VERSION.SDK_INT < 17 || layoutDirection == View.LAYOUT_DIRECTION_LTR
+inline val View.isLtr get() = layoutDirection == View.LAYOUT_DIRECTION_LTR
 
 /**
  * True if layout direction is **right to left**, like in Arabic.

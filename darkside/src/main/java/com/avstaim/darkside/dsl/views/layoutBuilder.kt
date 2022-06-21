@@ -36,7 +36,7 @@ internal interface SimplifiedAddingViewBuilder : AddingViewBuilder {
 @InternalApi
 class LayoutBuilderImpl<LP : ViewGroup.LayoutParams>(
     override val ctx: Context,
-    val lparamsProvider: LProvider<LP>,
+    private val lparamsProvider: LProvider<LP>,
 ) : LayoutBuilder<LP> {
 
     private var viewManager: ViewManager? = null

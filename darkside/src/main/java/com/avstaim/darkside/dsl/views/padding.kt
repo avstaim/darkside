@@ -1,6 +1,7 @@
+@file:Suppress("unused")
+
 package com.avstaim.darkside.dsl.views
 
-import android.os.Build
 import android.view.View
 import androidx.annotation.Px
 import com.avstaim.darkside.cookies.NO_GETTER
@@ -27,18 +28,12 @@ inline var View.bottomPadding: Int
     set(@Px value) = setPadding(paddingLeft, paddingTop, paddingRight, value)
 
 inline var View.startPadding: Int
-    get() = if (Build.VERSION.SDK_INT >= 17) paddingStart else paddingLeft
-    set(@Px value) = when {
-        Build.VERSION.SDK_INT >= 17 -> setPaddingRelative(value, paddingTop, paddingEnd, paddingBottom)
-        else -> setPadding(value, paddingTop, paddingRight, paddingBottom)
-    }
+    get() = paddingStart
+    set(@Px value) = setPaddingRelative(value, paddingTop, paddingEnd, paddingBottom)
 
 inline var View.endPadding: Int
-    get() = if (Build.VERSION.SDK_INT >= 17) paddingEnd else paddingRight
-    set(@Px value) = when {
-        Build.VERSION.SDK_INT >= 17 -> setPaddingRelative(paddingStart, paddingTop, value, paddingBottom)
-        else -> setPadding(paddingLeft, paddingTop, value, paddingBottom)
-    }
+    get() = paddingEnd
+    set(@Px value) = setPaddingRelative(paddingStart, paddingTop, value, paddingBottom)
 
 inline var View.leftPadding: Int
     get() = paddingLeft

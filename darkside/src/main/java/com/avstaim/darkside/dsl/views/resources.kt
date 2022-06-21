@@ -21,7 +21,7 @@ import com.avstaim.darkside.cookies.illegalArg
 import com.avstaim.darkside.cookies.isMainThread
 
 inline fun Context.str(@StringRes stringResId: Int): String = resources.getString(stringResId)
-inline fun Fragment.str(@StringRes stringResId: Int) = context!!.str(stringResId)
+inline fun Fragment.str(@StringRes stringResId: Int) = requireContext().str(stringResId)
 inline fun View.str(@StringRes stringResId: Int) = context.str(stringResId)
 
 inline fun Context.str(

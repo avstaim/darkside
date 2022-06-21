@@ -1,6 +1,3 @@
-// Copyright (c) 2020 Yandex LLC. All rights reserved.
-// Author: Alex Sher <avstaim@yandex-team.ru>
-
 @file:Suppress("unused")
 
 package com.avstaim.darkside.dsl.views
@@ -24,7 +21,7 @@ inline fun ViewBuilder.spinner(
     init: Spinner.() -> Unit = {}
 ): Spinner  = view(id, themeRes, styleAttr, styleRes, init)
 
-fun <T : Adapter> AdapterView<T>.onItemSelect(itemListener: (AdapterItem?) -> Unit) {
+inline fun <T : Adapter> AdapterView<T>.onItemSelect(crossinline itemListener: (AdapterItem?) -> Unit) {
     onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
         override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
             activity.coroutineScope.launch {

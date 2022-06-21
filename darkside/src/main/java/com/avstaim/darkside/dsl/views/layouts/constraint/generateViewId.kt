@@ -4,10 +4,8 @@
 
 package com.avstaim.darkside.dsl.views.layouts.constraint
 
-import android.os.Build.VERSION.SDK_INT
 import android.view.View
 import com.avstaim.darkside.cookies.isMainThread
-import java.util.concurrent.atomic.AtomicInteger
 
 /**
  * 1. Generates a View id that doesn't collide with AAPT generated ones (`R.id.xxx`),
@@ -44,26 +42,12 @@ fun generateViewId(): Int = when {
         // Decrement here to avoid any collision with other generated ids which are incremented.
         mainThreadLastGeneratedId = (if (it == 1) aaptIdsStart else it) - 1
     }
-    SDK_INT >= 17 -> View.generateViewId()
-    else -> generatedViewIdCompat()
+    else -> View.generateViewId()
 }
 
 /** aapt-generated IDs have the high byte nonzero. Clamp to the range under that. */
 private const val aaptIdsStart = 0x00FFFFFF
 private var mainThreadLastGeneratedId = aaptIdsStart - 1
-
-private val nextGeneratedId = AtomicInteger(1)
-private fun generatedViewIdCompat(): Int {
-    while (true) {
-        val result = nextGeneratedId.get()
-        // aapt-generated IDs have the high byte nonzero. Clamp to the range under that.
-        var newValue = result + 1
-        if (newValue > aaptIdsStart) newValue = 1 // Roll over to 1, not 0.
-        if (nextGeneratedId.compareAndSet(result, newValue)) {
-            return result
-        }
-    }
-}
 
 internal fun generateViewIdCompat() = generateViewId()
 
