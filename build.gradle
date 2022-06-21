@@ -1,12 +1,12 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     ext {
-        kotlin_version = "1.6.10"
+        kotlin_version = "1.6.21"
         artifactory_url_snapshot = "https://artifactory.yandex.net/artifactory/yandex_mobile_snapshots/"
         artifactory_url_release = "https://artifactory.yandex.net/artifactory/yandex_mobile_releases/"
 
         isRelease = false
-        libVersion = "20220621"
+        libVersion = "20220621.1"
     }
     repositories {
         google()
