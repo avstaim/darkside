@@ -13,7 +13,7 @@ internal class DslAdapterChunk<T, I : T>(
 
     override fun onCreateViewHolder(context: Context): ChunkViewHolder<T> {
         val slab = slabFactory.invoke(context)
-        return ChunkViewHolder<T>(context, slab) { itemToBind ->
+        return ChunkViewHolder(slab) { itemToBind ->
             @Suppress("UNCHECKED_CAST")
             slab.bind(itemToBind as I)
         }

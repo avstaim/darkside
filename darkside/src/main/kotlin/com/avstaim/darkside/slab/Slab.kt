@@ -129,6 +129,8 @@ abstract class Slab<V : View> : SlabLifecycle, CoroutineScope {
     @CallSuper
     override fun onConfigurationChanged(newConfig: Configuration?) = Unit
 
+    open fun overrideLayoutParams(): ViewGroup.LayoutParams? = null
+
     /**
      * See [Slot.insert].
      */
@@ -192,11 +194,35 @@ abstract class Slab<V : View> : SlabLifecycle, CoroutineScope {
                 )
             }
         }
-        val layoutParams = viewToReplace.layoutParams
+        val layoutParams = overrideLayoutParams() ?: viewToReplace.layoutParams
         if (layoutParams != null) {
             viewParent.addView(view, index, layoutParams)
         } else {
             viewParent.addView(view, index)
+        }
+        return view
+    }
+
+    internal fun extractView(): View {
+        KAssert.assertMainThread()
+
+        if (!viewWasInitialized) {
+            viewWasInitialized = true
+            onCreate()
+            view.addOnAttachStateChangeListener(slabController)
+        }
+        val saveStateContainer = isSaveStateSupported(view)
+        if (view.id != View.NO_ID && saveStateContainer != null) {
+            if (saveStateView == null) {
+                saveStateView = SaveStateView(view.context, slab = this).apply {
+                    visibility = View.GONE
+                    id = view.id and 0x00FFFFFF or 0x19000000
+                }
+                saveStateContainer.addView(
+                    saveStateView,
+                    ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                )
+            }
         }
         return view
     }
