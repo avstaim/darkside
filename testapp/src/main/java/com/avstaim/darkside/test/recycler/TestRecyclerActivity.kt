@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.os.PersistableBundle
 import androidx.appcompat.app.AppCompatActivity
 import com.avstaim.darkside.dsl.views.setContentUi
+import com.avstaim.darkside.service.KLog
 
 class TestRecyclerActivity : AppCompatActivity() {
 
@@ -13,5 +14,7 @@ class TestRecyclerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentUi(ui)
+
+        KLog.isEnabled = true
     }
 }

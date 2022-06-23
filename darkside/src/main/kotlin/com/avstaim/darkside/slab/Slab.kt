@@ -129,7 +129,7 @@ abstract class Slab<V : View> : SlabLifecycle, CoroutineScope {
     @CallSuper
     override fun onConfigurationChanged(newConfig: Configuration?) = Unit
 
-    open fun overrideLayoutParams(): ViewGroup.LayoutParams? = null
+    open fun V.overrideLayoutParams(): ViewGroup.LayoutParams? = null
 
     /**
      * See [Slot.insert].
@@ -194,7 +194,7 @@ abstract class Slab<V : View> : SlabLifecycle, CoroutineScope {
                 )
             }
         }
-        val layoutParams = overrideLayoutParams() ?: viewToReplace.layoutParams
+        val layoutParams = view.overrideLayoutParams() ?: viewToReplace.layoutParams
         if (layoutParams != null) {
             viewParent.addView(view, index, layoutParams)
         } else {
@@ -224,6 +224,7 @@ abstract class Slab<V : View> : SlabLifecycle, CoroutineScope {
                 )
             }
         }
+        view.overrideLayoutParams()?.let { view.layoutParams = it }
         return view
     }
 

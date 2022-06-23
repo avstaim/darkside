@@ -6,6 +6,7 @@ import android.widget.FrameLayout
 import com.avstaim.darkside.cookies.ui.showToast
 import com.avstaim.darkside.dsl.views.LayoutUi
 import com.avstaim.darkside.dsl.views.ViewBuilder
+import com.avstaim.darkside.dsl.views.backgroundColor
 import com.avstaim.darkside.dsl.views.imageDrawable
 import com.avstaim.darkside.dsl.views.imageView
 import com.avstaim.darkside.dsl.views.layouts.frameLayout
@@ -33,6 +34,7 @@ class DrawableUi(context: Context) : LayoutUi<FrameLayout>(context) {
 
     override fun ViewBuilder.layout() =
         frameLayout {
+            backgroundColor = Color.GRAY
             image {}
         }
 }
