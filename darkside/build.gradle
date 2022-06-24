@@ -29,7 +29,7 @@ android {
 }
 
 task sourceJar(type: Jar) {
-    from android.sourceSets.main.java.srcDirs
+    from android.sourceSets.main.java.srcDirs, android.sourceSets.main.kotlin.srcDirs
     classifier "sources"
 }
 

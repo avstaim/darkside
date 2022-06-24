@@ -21,12 +21,12 @@ open class ChunkedAdapter<D : Any>(
         }
     }
 
-    final override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChunkViewHolder<D> =
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChunkViewHolder<D> =
         chunks[viewType].onCreateViewHolder(parent.context)
 
-    final override fun onBindViewHolder(holder: ChunkViewHolder<D>, position: Int) = holder.bind(getItem(position))
+    override fun onBindViewHolder(holder: ChunkViewHolder<D>, position: Int) = holder.bind(getItem(position))
 
-    final override fun getItemViewType(position: Int): Int {
+    override fun getItemViewType(position: Int): Int {
         val item = getItem(position)
         chunks.forEachIndexed { index, chunk ->
             if (chunk.isForViewTypeOf(item)) {
@@ -36,9 +36,8 @@ open class ChunkedAdapter<D : Any>(
         error("No matching chunk for item $item at position $position")
     }
 
-    final override fun getItemCount() = super.getItemCount()
+    override fun bind(data: List<D>) = submitList(data.toMutableList())
 
-    final override fun bind(data: List<D>) = submitList(data.toMutableList())
     final override fun submitList(list: MutableList<D>?) = super.submitList(list)
 
     suspend fun bindAndWait(data: Collection<D>) {
