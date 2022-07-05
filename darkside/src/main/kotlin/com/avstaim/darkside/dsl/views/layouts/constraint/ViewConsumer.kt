@@ -1,6 +1,3 @@
-// Copyright (c) 2021 Yandex LLC. All rights reserved.
-// Author: Alex Sher <avstaim@yandex-team.ru>
-
 package com.avstaim.darkside.dsl.views.layouts.constraint
 
 import android.view.View
