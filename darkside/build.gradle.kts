@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         minSdk = Darkside.deps.android.minSdkVersion
-        minSdk = Darkside.deps.android.targetSdkVersion
+        targetSdk = Darkside.deps.android.targetSdkVersion
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
