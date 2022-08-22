@@ -5,8 +5,8 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.view.View
 import android.widget.FrameLayout
+import androidx.fragment.app.FragmentActivity
 import com.avstaim.darkside.R
-import java.lang.IllegalArgumentException
 
 internal object SlabHooks {
 
@@ -36,4 +36,17 @@ internal object SlabHooks {
             is ContextWrapper -> findActivity(context.baseContext)
             else -> throw IllegalArgumentException("Unsupported context $context")
         }
+
+
+    operator fun get(context: Context): SlabHookResultFragment {
+        val activity: Activity = findActivity(context) as? FragmentActivity ?: error("not a fragment activity")
+        val fm = (activity as FragmentActivity).supportFragmentManager
+        val fragment = fm.findFragmentByTag(SlabHookResultFragment.FRAGMENT_TAG)
+        if (fragment is SlabHookResultFragment) {
+            return fragment
+        }
+        val hookResultFragment = SlabHookResultFragment()
+        fm.beginTransaction().add(hookResultFragment, SlabHookResultFragment.FRAGMENT_TAG).commitNowAllowingStateLoss()
+        return hookResultFragment
+    }
 }

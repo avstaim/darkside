@@ -8,7 +8,7 @@ class Version {
     val versionMinor = 1
     val versionPatch = 0
 
-    val snapshotBase = "20220707"
+    val snapshotBase = "20220822"
     val snapshotPatch = "00"
     val snapshot = "$snapshotBase.$snapshotPatch"
 

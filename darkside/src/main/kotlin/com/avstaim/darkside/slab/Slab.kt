@@ -7,6 +7,11 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ScrollView
+import androidx.activity.result.ActivityResultCallback
+import androidx.activity.result.ActivityResultCaller
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.ActivityResultRegistry
+import androidx.activity.result.contract.ActivityResultContract
 import androidx.annotation.CallSuper
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -23,7 +28,7 @@ import kotlinx.coroutines.cancelChildren
 import java.util.UUID
 import kotlin.coroutines.CoroutineContext
 
-abstract class Slab<V : View> : SlabLifecycle, CoroutineScope {
+abstract class Slab<V : View> : SlabLifecycle, CoroutineScope, ActivityResultCaller {
 
     abstract val view: V
 
@@ -260,4 +265,17 @@ abstract class Slab<V : View> : SlabLifecycle, CoroutineScope {
         view.context.runIfIs<LifecycleOwner, Lifecycle> { lifecycleOwner ->
             lifecycleOwner.lifecycle
         }
+
+    override fun <I : Any?, O : Any?> registerForActivityResult(
+        contract: ActivityResultContract<I, O>,
+        callback: ActivityResultCallback<O>,
+    ): ActivityResultLauncher<I> =
+        SlabHooks[view.context].registerForActivityResult(contract, callback)
+
+    override fun <I : Any?, O : Any?> registerForActivityResult(
+        contract: ActivityResultContract<I, O>,
+        registry: ActivityResultRegistry,
+        callback: ActivityResultCallback<O>,
+    ): ActivityResultLauncher<I> =
+        SlabHooks[view.context].registerForActivityResult(contract, registry, callback)
 }
