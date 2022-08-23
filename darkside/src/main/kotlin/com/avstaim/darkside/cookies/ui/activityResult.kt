@@ -28,7 +28,7 @@ import kotlin.reflect.KClass
  *
  * WARNING! This api is delicate and should be used with a great caution.
  *
- * When you staring an activity for result and configuration is changed: most activities are re-created.
+ * When you starting an activity for result and configuration is changed: most activities are re-created.
  * This means the coroutine will be cancelled and result will never be got.
  *
  * You can use this api only when you can be sure that activity is never re-created
@@ -69,7 +69,7 @@ suspend inline fun <reified A : Activity, P, reified R> ActivityResultCaller.req
  *
  * WARNING! This api is delicate and should be used with a great caution.
  *
- * When you staring an activity for result and configuration is changed: most activities are re-created.
+ * When you starting an activity for result and configuration is changed: most activities are re-created.
  * This means the coroutine will be cancelled and result will never be got.
  *
  * You can use this api only when you can be sure that activity is never re-created
@@ -105,7 +105,7 @@ suspend inline fun <reified R> ActivityResultCaller.requestActivityForResult(
  *
  * WARNING! This api is delicate and should be used with a great caution.
  *
- * When you staring an activity for result and configuration is changed: most activities are re-created.
+ * When you starting an activity for result and configuration is changed: most activities are re-created.
  * This means the coroutine will be cancelled and result will never be got.
  *
  * You can use this api only when you can be sure that activity is never re-created
