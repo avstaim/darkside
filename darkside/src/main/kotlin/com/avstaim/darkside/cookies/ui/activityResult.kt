@@ -6,9 +6,15 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultCaller
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContract
+import androidx.fragment.app.Fragment
 import com.avstaim.darkside.common.optin.DelicateApi
+import com.avstaim.darkside.slab.Slab
+import com.avstaim.darkside.slab.SlabHooks
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 import kotlin.reflect.KClass
@@ -41,8 +47,8 @@ suspend inline fun <reified A : Activity, P, reified R> ActivityResultCaller.req
     noinline parser: (Bundle) -> R,
 ): R? {
     return suspendCancellableCoroutine { continuation ->
-        val launcher = registerForActivityResult(
-            HelperContract<P, R>(A::class, serializer, parser),
+        val launcher = dispatchRegisterForActivityResult(
+            HelperContract(A::class, serializer, parser),
         ) { result ->
             if (continuation.isActive) {
                 continuation.resume(result)
@@ -81,7 +87,7 @@ suspend inline fun <reified R> ActivityResultCaller.requestActivityForResult(
     noinline parser: (Intent) -> R,
 ): R? {
     return suspendCancellableCoroutine { continuation ->
-        val launcher = registerForActivityResult(
+        val launcher = dispatchRegisterForActivityResult(
             HelperContractSimple(intent, parser),
         ) { result ->
             if (continuation.isActive) {
@@ -116,7 +122,7 @@ suspend inline fun ActivityResultCaller.requestActivityForResult(
     intent: Intent,
 ): ActivityResult {
     return suspendCancellableCoroutine { continuation ->
-        val launcher = registerForActivityResult(
+        val launcher = dispatchRegisterForActivityResult(
             HelperContractNoParse(intent),
         ) { result ->
             if (continuation.isActive) {
@@ -130,6 +136,26 @@ suspend inline fun ActivityResultCaller.requestActivityForResult(
         }
     }
 }
+
+@PublishedApi
+internal fun <I, O> ActivityResultCaller.dispatchRegisterForActivityResult(
+    contract: ActivityResultContract<I, O>,
+    callback: ActivityResultCallback<O>
+): ActivityResultLauncher<I> =
+    when (this) {
+        is ComponentActivity ->
+            activityResultRegistry.register(randomKey(), contract, callback)
+
+        is Fragment ->
+            activity?.activityResultRegistry?.register(randomKey(), contract, callback)
+                ?: registerForActivityResult(contract, callback)
+
+        is Slab<*> ->
+            SlabHooks[view.context].activity?.activityResultRegistry?.register(randomKey(), contract, callback)
+                ?: registerForActivityResult(contract, callback)
+
+        else -> registerForActivityResult(contract, callback)
+    }
 
 class HelperContract<P, R>(
     private val activityClass: KClass<out Activity>,
@@ -181,3 +207,6 @@ data class ActivityResult(
     val code: ResultCode,
     val intent: Intent?,
 )
+
+fun randomKey(): String =
+    (0..(4..32).random()).map { ('a'..'z').random() }.joinToString()
