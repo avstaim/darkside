@@ -6,7 +6,11 @@ import android.content.Context
 import android.view.View
 import com.avstaim.darkside.dsl.views.Ui
 
-class SlabUi<V : View>(val slab: Slab<out V>) : Ui<V> {
+class SlabUi<V : View>(override val slab: Slab<out V>) : AbstractSlabUi<V>()
+
+abstract class AbstractSlabUi<V : View> : Ui<V> {
+
+    abstract val slab: Slab<out V>
 
     @Suppress("UNCHECKED_CAST")
     private val slabView: V by lazy {
