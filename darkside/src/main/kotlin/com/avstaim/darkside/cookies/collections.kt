@@ -47,3 +47,7 @@ inline fun <reified K, reified V> mapOfNotNullValues(
         .map { it as Pair<K, V> }
         .toMap()
 }
+
+inline fun <K, V, R> Map<out K, V>.mapValuesOnly(transform: (V) -> R): Map<K, R> =
+    mapValues { entry -> transform(entry.value) }
+

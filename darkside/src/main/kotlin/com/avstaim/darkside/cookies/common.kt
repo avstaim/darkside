@@ -183,3 +183,8 @@ inline fun <T> T.alsoIfEquals(candidate: T, block: (T) -> Unit): T =
  */
 inline fun <T> T.alsoUnlessEquals(candidate: T, block: (T) -> Unit): T =
     if (this != candidate) also(block) else this
+
+/**
+ * Returns `this` if receiver is not `null`, or calls [recovery] to get default value.
+ */
+inline fun <T> T?.recoverIfNull(recovery: () -> T): T = this ?: recovery()
