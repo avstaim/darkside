@@ -13,8 +13,8 @@ import com.avstaim.darkside.dsl.views.wrapContent
 import kotlin.reflect.KClass
 
 inline fun View.simpleLayoutParams(
-    @Px width: Int,
-    @Px height: Int,
+    @Px width: Int = wrapContent,
+    @Px height: Int = wrapContent,
     init: ViewGroup.LayoutParams.() -> Unit = {},
 ): ViewGroup.LayoutParams {
     layoutParams?.let { lp ->

@@ -19,6 +19,7 @@
             </intent-filter>
         </activity>
         <activity android:name="com.avstaim.darkside.test.recycler.TestRecyclerActivity"/>
+        <activity android:name="com.avstaim.darkside.test.slotui.SlotUiTestActivity"/>
     </application>
 
 </manifest>
