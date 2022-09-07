@@ -12,7 +12,7 @@ class Version {
     val snapshotPatch = "00"
     val snapshot = "$snapshotBase.$snapshotPatch"
 
-    val isRelease = false
+    val isRelease = true
 
     val versionName = if (isRelease) "$versionMajor.$versionMinor.$versionPatch" else snapshot
     val versionNameInteger = versionMajor * 10000 + versionMinor * 100 + versionPatch
