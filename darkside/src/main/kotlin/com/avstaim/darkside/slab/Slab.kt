@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LifecycleRegistry
 import androidx.recyclerview.widget.RecyclerView
 import com.avstaim.darkside.cookies.runIfIs
 import com.avstaim.darkside.cookies.takeIfIs
@@ -62,6 +63,8 @@ abstract class Slab<V : View> : SlabLifecycle, CoroutineScope, ActivityResultCal
 
     private var activityDestroyListener: () -> Unit = {}
 
+    private val lifecycleOwner = SlabLifecycleOwner()
+
     /**
      * Called when the view is attached to the window. No activity of this component must start before this event.
      *
@@ -82,12 +85,6 @@ abstract class Slab<V : View> : SlabLifecycle, CoroutineScope, ActivityResultCal
     }
 
     /**
-     * Same as [Activity.onStart] or [Fragment.onStart].
-     */
-    @CallSuper
-    override fun onStart() = Unit
-
-    /**
      * Close to [Activity.onSaveInstanceState] and [Fragment.onSaveInstanceState]
      *
      * See in README.md limitations applied for this mechanism.
@@ -99,19 +96,33 @@ abstract class Slab<V : View> : SlabLifecycle, CoroutineScope, ActivityResultCal
      * Same as [Activity.onResume] or [Fragment.onResume].
      */
     @CallSuper
-    override fun onResume() = Unit
+    override fun onResume() {
+        lifecycleOwner.lifecycleRegistry.currentState = Lifecycle.State.RESUMED
+    }
 
     /**
      * Same as [Activity.onPause] or [Fragment.onPause].
      */
     @CallSuper
-    override fun onPause() = Unit
+    override fun onPause() {
+        lifecycleOwner.lifecycleRegistry.currentState = Lifecycle.State.STARTED
+    }
+
+    /**
+     * Same as [Activity.onStart] or [Fragment.onStart].
+     */
+    @CallSuper
+    override fun onStart() {
+        lifecycleOwner.lifecycleRegistry.currentState = Lifecycle.State.STARTED
+    }
 
     /**
      * Same as [Activity.onStop] or [Fragment.onStop].
      */
     @CallSuper
-    override fun onStop() = Unit
+    override fun onStop() {
+        lifecycleOwner.lifecycleRegistry.currentState = Lifecycle.State.CREATED
+    }
 
     /**
      * Called when the view is detached from the window or activity is destroyed.
@@ -125,12 +136,15 @@ abstract class Slab<V : View> : SlabLifecycle, CoroutineScope, ActivityResultCal
     }
 
     @CallSuper
-    override fun onCreate() = Unit
+    override fun onCreate() {
+        lifecycleOwner.lifecycleRegistry.currentState = Lifecycle.State.CREATED
+    }
 
     @CallSuper
     override fun onDestroy() {
         job.cancel()
         dispatcher.reset()
+        lifecycleOwner.lifecycleRegistry.currentState = Lifecycle.State.DESTROYED
     }
 
     @CallSuper
@@ -273,17 +287,23 @@ abstract class Slab<V : View> : SlabLifecycle, CoroutineScope, ActivityResultCal
         contract: ActivityResultContract<I, O>,
         callback: ActivityResultCallback<O>,
     ): ActivityResultLauncher<I> =
-        getComponentActivity().activityResultRegistry.register(randomKey(), contract, callback)
+        getComponentActivity().activityResultRegistry.register(randomKey(), lifecycleOwner, contract, callback)
 
     override fun <I : Any?, O : Any?> registerForActivityResult(
         contract: ActivityResultContract<I, O>,
         registry: ActivityResultRegistry,
         callback: ActivityResultCallback<O>,
-    ): ActivityResultLauncher<I> = registry.register(randomKey(), contract, callback)
+    ): ActivityResultLauncher<I> = registry.register(randomKey(), lifecycleOwner, contract, callback)
 
     private fun getComponentActivity(): ComponentActivity =
         SlabHooks
             .findActivity(view.context)
             .takeIfIs<ComponentActivity>()
             ?: SlabHooks[view.context].requireActivity()
+
+    private class SlabLifecycleOwner : LifecycleOwner {
+
+        val lifecycleRegistry = LifecycleRegistry(this)
+        override fun getLifecycle(): Lifecycle = lifecycleRegistry
+    }
 }
