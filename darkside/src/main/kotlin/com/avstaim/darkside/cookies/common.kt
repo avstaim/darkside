@@ -188,3 +188,8 @@ inline fun <T> T.alsoUnlessEquals(candidate: T, block: (T) -> Unit): T =
  * Returns `this` if receiver is not `null`, or calls [recovery] to get default value.
  */
 inline fun <T> T?.recoverIfNull(recovery: () -> T): T = this ?: recovery()
+
+/**
+ * Take it if is instance of given class, or null if not.
+ */
+inline fun <reified T> Any?.takeIfIs(): T? = if (this is T) this else null

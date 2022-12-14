@@ -150,9 +150,7 @@ internal fun <I, O> ActivityResultCaller.dispatchRegisterForActivityResult(
             activity?.activityResultRegistry?.register(randomKey(), contract, callback)
                 ?: registerForActivityResult(contract, callback)
 
-        is Slab<*> ->
-            SlabHooks[view.context].activity?.activityResultRegistry?.register(randomKey(), contract, callback)
-                ?: registerForActivityResult(contract, callback)
+        is Slab<*> -> registerForActivityResult(contract, callback)
 
         else -> registerForActivityResult(contract, callback)
     }

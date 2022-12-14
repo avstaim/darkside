@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ScrollView
+import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultCaller
 import androidx.activity.result.ActivityResultLauncher
@@ -19,6 +20,8 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.avstaim.darkside.cookies.runIfIs
+import com.avstaim.darkside.cookies.takeIfIs
+import com.avstaim.darkside.cookies.ui.randomKey
 import com.avstaim.darkside.service.KAssert
 import com.avstaim.darkside.service.KLog
 import kotlinx.coroutines.CoroutineScope
@@ -270,12 +273,17 @@ abstract class Slab<V : View> : SlabLifecycle, CoroutineScope, ActivityResultCal
         contract: ActivityResultContract<I, O>,
         callback: ActivityResultCallback<O>,
     ): ActivityResultLauncher<I> =
-        SlabHooks[view.context].registerForActivityResult(contract, callback)
+        getComponentActivity().activityResultRegistry.register(randomKey(), contract, callback)
 
     override fun <I : Any?, O : Any?> registerForActivityResult(
         contract: ActivityResultContract<I, O>,
         registry: ActivityResultRegistry,
         callback: ActivityResultCallback<O>,
-    ): ActivityResultLauncher<I> =
-        SlabHooks[view.context].registerForActivityResult(contract, registry, callback)
+    ): ActivityResultLauncher<I> = registry.register(randomKey(), contract, callback)
+
+    private fun getComponentActivity(): ComponentActivity =
+        SlabHooks
+            .findActivity(view.context)
+            .takeIfIs<ComponentActivity>()
+            ?: SlabHooks[view.context].requireActivity()
 }
