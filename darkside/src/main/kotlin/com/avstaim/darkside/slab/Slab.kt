@@ -22,7 +22,6 @@ import androidx.lifecycle.LifecycleRegistry
 import androidx.recyclerview.widget.RecyclerView
 import com.avstaim.darkside.cookies.runIfIs
 import com.avstaim.darkside.cookies.takeIfIs
-import com.avstaim.darkside.cookies.ui.randomKey
 import com.avstaim.darkside.service.KAssert
 import com.avstaim.darkside.service.KLog
 import kotlinx.coroutines.CoroutineScope
@@ -30,6 +29,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancelChildren
 import java.util.UUID
+import java.util.concurrent.atomic.AtomicInteger
 import kotlin.coroutines.CoroutineContext
 
 abstract class Slab<V : View> : SlabLifecycle, CoroutineScope, ActivityResultCaller {
@@ -64,6 +64,11 @@ abstract class Slab<V : View> : SlabLifecycle, CoroutineScope, ActivityResultCal
     private var activityDestroyListener: () -> Unit = {}
 
     private val lifecycleOwner = SlabLifecycleOwner()
+
+    private val nextLocalRequestCode = AtomicInteger()
+
+    protected open val activityResultKey: String
+        get() = uniqueInstanceId
 
     /**
      * Called when the view is attached to the window. No activity of this component must start before this event.
@@ -287,13 +292,18 @@ abstract class Slab<V : View> : SlabLifecycle, CoroutineScope, ActivityResultCal
         contract: ActivityResultContract<I, O>,
         callback: ActivityResultCallback<O>,
     ): ActivityResultLauncher<I> =
-        getComponentActivity().activityResultRegistry.register(randomKey(), lifecycleOwner, contract, callback)
+        registerForActivityResult(contract, getComponentActivity().activityResultRegistry, callback)
 
     override fun <I : Any?, O : Any?> registerForActivityResult(
         contract: ActivityResultContract<I, O>,
         registry: ActivityResultRegistry,
         callback: ActivityResultCallback<O>,
-    ): ActivityResultLauncher<I> = registry.register(randomKey(), lifecycleOwner, contract, callback)
+    ): ActivityResultLauncher<I> = registry.register(
+        "slab_${activityResultKey}_rq#${nextLocalRequestCode.getAndIncrement()}",
+        lifecycleOwner,
+        contract,
+        callback,
+    )
 
     private fun getComponentActivity(): ComponentActivity =
         SlabHooks
